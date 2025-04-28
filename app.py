@@ -44,9 +44,3 @@ def get_listings(url):
     except Exception as e:
         print(f"An error occurred: {e}")
         return []
-
-# Example usage
-if __name__ == "__main__":
-    url = "https://www.willhaben.at/iad/immobilien/mietwohnungen/mietwohnung-angebote?sort=1&rows=30"
-    listings = get_listings(url)
-    print(listings)
