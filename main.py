@@ -1,4 +1,4 @@
-from app import get_listings
+from src.get_listings import get_listings
 
 # Example usage
 if __name__ == "__main__":

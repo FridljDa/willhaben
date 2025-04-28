@@ -1,6 +1,11 @@
 # Willhaben API
 This module has only tested on `https://willhaben.at`!
 
+# Getting started:
+
+1. Copy the contents of `config-template.ini` to a file `config.ini`
+2. Set the other values in `config.ini` to fit your needs, some explanation of the parameters can be found in `config.py`
+3. Manipulate and run `main.py`
 
 #### uv
 
