@@ -1,6 +1,43 @@
 # Willhaben API
 This module has only tested on `https://willhaben.at`!
 
+
+#### uv
+
+Install `uv`, for example as described [here](https://docs.astral.sh/uv/getting-started/installation/).
+
+#### Python
+
+Make sure you have a Python 3.12 version installed.
+
+Check your installed versions with
+
+```sh
+uv python list --only-installed | grep 3.12
+```
+
+Or install with
+
+```sh
+uv python install 3.12
+```
+
+### Install project
+
+```sh
+uv sync --all-groups
+```
+
+In your IDE, set the project's Python interpreter to `</absolute/path/to/project_root>/.venv/bin/python`.
+
+### Add Skainet access token
+
+If you do not have a skainet access token yet, please create one at https://auth.model.tngtech.com/.
+Set the expiry date such that it is still valid on the day of the workshop.
+
+Rename the file `.env.sample` to `.env` and add your token. The `.env` file will not be checked in to version control.
+
+
 ## Documentation
 There are two ways you can use this API.
 Either by entering the URL and let the API extract all the results or by using the builder to build the URL and let the API extract the results.
