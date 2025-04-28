@@ -1,4 +1,4 @@
 /node_modules/
 /artifacts/
 /.nyc_output/
-/config.ini
+/src/config.ini
