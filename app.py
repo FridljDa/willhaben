@@ -32,6 +32,8 @@ def get_listings(url):
                 value = attribute['values'][0]
                 advert[name] = int(value) if value.isdigit() else value
 
+            #TODO description gets trimmed, I want the full description
+
             # Remove unnecessary keys
             keys_to_remove = ['attributes', 'contextLinkList', 'advertiserInfo', 'advertImageList']
             for key in keys_to_remove:
