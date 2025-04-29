@@ -17,7 +17,7 @@ class LLmDecision(Enum):
 
 def decide_if_is_sublet(class_file_content: dict[str, Any]) -> LLmDecision:
     str_class_file_content = str(class_file_content)
-    return decide_on_file_content(class_file_content, config.decide_if_is_sublet_prompt_filename)
+    return decide_on_file_content(str_class_file_content, config.decide_if_is_sublet_prompt_filename)
 
 def call_llm_from_prompt_template(class_file_content: str, prompt_filename: str) -> (bool, str):
     prompt_file_path = os.path.join(config.prompt_directory, prompt_filename)

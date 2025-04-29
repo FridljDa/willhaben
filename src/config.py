@@ -36,3 +36,7 @@ prompt_directory = config.get(prompt_parser_section_head, "prompt_directory")
 positive_list = json.loads(config.get(prompt_parser_section_head, "positive_list"))
 # list that contains answers of the llm that will be considered negative
 negative_list = json.loads(config.get(prompt_parser_section_head, "negative_list"))
+
+
+# filenames of special prompts
+decide_if_is_sublet_prompt_filename = config.get(prompt_parser_section_head, "decide_if_is_sublet_prompt_filename")
