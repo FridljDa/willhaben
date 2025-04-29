@@ -15,18 +15,21 @@ class LLmDecision(Enum):
     Undecided = -1,
     Error = -2,
 
-def decide_if_is_sublet(class_file_content: dict[str, Any]) -> LLmDecision:
-    str_class_file_content = str(class_file_content)
-    return decide_on_file_content(str_class_file_content, config.decide_if_is_sublet_prompt_filename)
+def decide_if_is_sublet(listing_content: dict[str, int]) -> LLmDecision:
+    return decide_on_file_content(listing_content, config.decide_if_is_sublet_prompt_filename)
 
-def call_llm_from_prompt_template(class_file_content: str, prompt_filename: str) -> (bool, str):
+def substitute_prompt_template(prompt_template_string: str, listing_content: dict[str, int]) -> str:
+    prompt_template = Template(prompt_template_string)
+    prompt = prompt_template.substitute(filecontent = listing_content)
+    return prompt
+
+def call_llm_from_prompt_template(listing_content: dict[str, int], prompt_filename: str) -> (bool, str):
     prompt_file_path = os.path.join(config.prompt_directory, prompt_filename)
 
     with open(prompt_file_path) as file:
         prompt_template_string = file.read()
 
-        prompt_template = Template(prompt_template_string)
-        prompt = prompt_template.substitute(filecontent = class_file_content)
+        prompt = substitute_prompt_template(prompt_template_string, listing_content)
         (success, answer) = ask_llm(prompt)
 
     print(f"DEBUG: llm answer decide_on_file_content for promptfile {prompt_filename}:\n{answer}")

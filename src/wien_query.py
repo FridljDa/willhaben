@@ -5,6 +5,8 @@ url_query = 'https://www.willhaben.at/iad/immobilien/mietwohnungen/mietwohnung-a
 
 listings = get_listings(url_query)
 
+print(type(listings))
+
 # Filter the listings to include only the selected keys
 selected_keys = ['location', 'postcode', 'description', 'heading', 'body_dyn', 'price', 'size', 'seo_url']
 listings = [
@@ -12,8 +14,8 @@ listings = [
     for listing in listings
 ]
 
-keywords = ['sublet', 'months', 'october', 'december', 'monate', 'kurzzeit']
 
+#keywords = ['sublet', 'months', 'october', 'december', 'monate', 'kurzzeit']
 # Filter listings for those containing any of the keywords in heading, body_dyn, or description
 #filtered_listings = [
 #    listing for listing in listings

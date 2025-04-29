@@ -1,6 +1,6 @@
 name: Pylint
 
-on: [push]
+on: [] # [push] This workflow is triggered on a schedule (every day at 00:00 UTC) and on push events to the main branch.
 
 jobs:
   build:
