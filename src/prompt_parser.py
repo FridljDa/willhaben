@@ -19,13 +19,6 @@ def decide_if_is_sublet(listing_content: dict[str, int]) -> LLmDecision:
     return decide_on_file_content(listing_content, config.decide_if_is_sublet_prompt_filename)
 
 def substitute_prompt_template(prompt_template_string: str, listing_content: dict[str, int]) -> str:
-    # Dictionary with values
-    listing_content = {
-        'heading': 'zentral und dennoch ruhig! 2 Zimmer Erstbezugswohnung mit Balkon ab sofort beziehbar!',
-        'body_dyn': 'Liebe Wohnungssuchende, Wir freuen uns über Ihr Interesse an dem Projekt APOLLOGASSE18 und bieten\xa0 auf unserer Projekt-Homepage w w w . a p o l l o g a s s e 1 8 . a t www.apollogasse18.at einen Überblick über alle verfügbaren Wohneinheiten.\xa0 Ob Zwei-,...',
-        'description': 'zentral und dennoch ruhig! 2 Zimmer Erstbezugswohnung mit Balkon ab sofort beziehbar!'
-    }
-
     prompt_template = Template(prompt_template_string)
     print(f"DEBUG: prompt_template_string:\n{prompt_template_string}")
     print(f"DEBUG: listing_content:\n{listing_content}")
