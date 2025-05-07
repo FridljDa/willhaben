@@ -4,15 +4,7 @@ import json
 
 # approach 2
 import requests
-import os
-import sys
-import random
-import time
-import re
 
-from bs4 import BeautifulSoup
-from PIL import Image
-from colorama import Fore
 
 
 def get_listings(url):
