@@ -4,8 +4,6 @@ import requests
 import os
 
 from bs4 import BeautifulSoup
-from colorama import Fore
-
 
 def get_listings2(url):
     """
@@ -42,28 +40,16 @@ def get_listings2(url):
                              .find_next()
                              .text)
 
+    listing = {
+        "availability_start": availability_start,
+        "availability_duration": availability_duration,
+        "description": description,
+        "wh_code": wh_code,
+        "url": url
+    }
 
-    if not os.path.exists("Results/" + wh_code):
-        os.makedirs("Results/" + wh_code)
-
-
-    infos = open("Results/" + wh_code + f"/Infos {wh_code}.txt", "w", encoding='utf-8',
-                 errors='replace')
-    infos.write("Titel, Price, ZIP and Place:\n")
-    infos.write(heading_item)
-    infos.write("\n----------------------------------------------\n")
-    infos.write("Description:\n")
-    infos.write(description)
-    infos.write("\n----------------------------------------------\n")
-    #infos.write("attributevalue:\n")
-    #infos.write(attributevalue)
-    infos.write("\n----------------------------------------------\n")
-    infos.write("Willhaben Link:\n")
-    infos.write(url)
-    infos.write("\n----------------------------------------------\n")
-    infos.close()
-
-    print(Fore.GREEN + f"-----------------------\nGrabbing completed.\n-----------------------" + Fore.CYAN)
+    return listing
 
 url_test = "https://www.willhaben.at/iad/immobilien/d/mietwohnungen/wien/wien-1030-landstrasse/provisionsfreie-moeblierte-wohnung-mit-perfekter-oeffentlicher-anbindung-in-1030-2007459668"
-get_listings2(url_test)
+res = get_listings2(url_test)
+print(res)
