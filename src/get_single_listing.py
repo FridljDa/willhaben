@@ -3,6 +3,19 @@
 import requests
 from bs4 import BeautifulSoup
 
+def get_availability_start(soup, string_find):
+    """
+    Extracts the availability start date from the soup.
+
+    :param soup: BeautifulSoup object of the page content.
+    :param string_find: The string to search for in the soup.
+    :return: The availability start date as a string, or None if not found.
+    """
+    element = soup.find(string=string_find)
+    if element is None:
+        return None
+    return element.find_next().text
+
 def get_single_listing(url):
     """
     Gets the listings from a URL.
@@ -10,6 +23,8 @@ def get_single_listing(url):
     :param url: The URL to fetch listings from.
     :return: A dictionaries containing the listing.
     """
+
+    print('Getting listings from ' + url)
 
     product_page = requests.get(url)
     soup_pd = BeautifulSoup(product_page.content, 'html.parser')
@@ -29,13 +44,9 @@ def get_single_listing(url):
                    .find(attrs={"data-testid": "ad-description-Objektbeschreibung"})
                    .text)
 
-    availability_start = (soup_pd.find(string="Verfügbar")
-                          .find_next()
-                          .text)
+    availability_start = get_availability_start(soup_pd, "Verfügbar")
 
-    availability_duration = (soup_pd.find(string="Befristung")
-                             .find_next()
-                             .text)
+    availability_duration = get_availability_start(soup_pd, "Befristung")
 
     listing = {
         "availability_start": availability_start,
