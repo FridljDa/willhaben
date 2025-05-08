@@ -1,3 +1,5 @@
+import json
+
 from src.get_listings import get_listings
 from get_single_listing import get_single_listing
 
@@ -20,7 +22,8 @@ for listing in listings:
     more_keys = get_single_listing(listing['full_url'])
     listing.update(more_keys)
 
-print(listings)
+print(json.dumps(listings, indent=4, ensure_ascii=False))
+print(f"Number of listings: {len(listings)}")
 
 #keywords = ['sublet', 'months', 'october', 'december', 'monate', 'kurzzeit']
 # Filter listings for those containing any of the keywords in heading, body_dyn, or description
