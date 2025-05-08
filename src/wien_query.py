@@ -7,8 +7,6 @@ url_query = 'https://www.willhaben.at/iad/immobilien/mietwohnungen/mietwohnung-a
 
 listings = get_listings(url_query)
 
-print(type(listings))
-
 # Filter the listings to include only the selected keys
 selected_keys = ['location', 'postcode', 'description', 'heading', 'body_dyn', 'price', 'size', 'seo_url']
 selected_keys = ['heading', 'price', 'size', 'seo_url']

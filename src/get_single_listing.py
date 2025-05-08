@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-def get_availability_start(soup, string_find):
+def get_element_next_to_string(soup, string_find):
     """
     Extracts the availability start date from the soup.
 
@@ -44,14 +44,20 @@ def get_single_listing(url):
                    .find(attrs={"data-testid": "ad-description-Objektbeschreibung"})
                    .text)
 
-    availability_start = get_availability_start(soup_pd, "Verfügbar")
+    availability_start = get_element_next_to_string(soup_pd, "Verfügbar")
 
-    availability_duration = get_availability_start(soup_pd, "Befristung")
+    availability_duration = get_element_next_to_string(soup_pd, "Befristung")
+
+    number_rooms = get_element_next_to_string(soup_pd, "Zimmer")
+
+    size2 = get_element_next_to_string(soup_pd, "Wohnfläche")
 
     listing = {
         "availability_start": availability_start,
         "availability_duration": availability_duration,
         "description": description,
+        "number_rooms": number_rooms,
+        "size2": size2,
         "wh_code": wh_code,
         "url": url
     }
