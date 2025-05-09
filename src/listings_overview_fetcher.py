@@ -12,6 +12,15 @@ logger = logging.getLogger(__name__)
 NEXT_DATA_START = '<script id="__NEXT_DATA__" type="application/json">'
 NEXT_DATA_END = '</script>'
 
+# Constants for JSON keys
+KEY_PROPS = 'props'
+KEY_PAGE_PROPS = 'pageProps'
+KEY_SEARCH_RESULT = 'searchResult'
+KEY_ADVERT_SUMMARY_LIST = 'advertSummaryList'
+KEY_ADVERT_SUMMARY = 'advertSummary'
+KEY_ATTRIBUTES = 'attributes'
+KEY_ATTRIBUTE = 'attribute'
+
 class ListingsOverviewFetcher:
     """
     Fetches and processes listings from a given URL.
@@ -42,27 +51,83 @@ class ListingsOverviewFetcher:
             html_content = response.text
 
             # Extract the JSON data from the <script> tag
-            start_index = html_content.find(NEXT_DATA_START) + len(NEXT_DATA_START)
-            end_index = html_content.find(NEXT_DATA_END, start_index)
-            json_data = html_content[start_index:end_index]
+            json_data = self._extract_json_data(html_content)
+            if not json_data:
+                logger.error("Failed to extract JSON data from the HTML content.")
+                return []
+
             parsed_data = json.loads(json_data)
 
-            # Extract and process the listings
-            advert_summaries = parsed_data['props']['pageProps']['searchResult']['advertSummaryList']['advertSummary']
+            # Validate and extract listings
+            advert_summaries = self._extract_advert_summaries(parsed_data)
+            if not advert_summaries:
+                logger.error("No advert summaries found in the JSON data.")
+                return []
+
+            # Process each listing
             for single_listing_before_conversion in advert_summaries:
-                # Flatten the attributes into the main dictionary
-                for attribute in single_listing_before_conversion['attributes']['attribute']:
-                    name = attribute['name'].lower()
-                    value = attribute['values'][0]
-                    single_listing_before_conversion[name] = int(value) if value.isdigit() else value
+                self._process_single_listing(single_listing_before_conversion)
 
-                full_url = f"https://www.willhaben.at/iad/{single_listing_before_conversion['seo_url']}"
+            logger.info(f"Successfully fetched and processed {len(advert_summaries)} listings.")
+            return advert_summaries
 
-                single_listing = SingleListing(full_url)
-                single_listing.update_dict(single_listing_before_conversion)
-
-                self.multiple_listings.append_listing(single_listing)
-
+        except requests.RequestException as req_err:
+            logger.exception(f"HTTP error occurred while fetching listings: {req_err}")
+        except json.JSONDecodeError as json_err:
+            logger.exception(f"JSON parsing error: {json_err}")
+        except KeyError as key_err:
+            logger.exception(f"Missing expected key in JSON data: {key_err}")
         except Exception as e:
-            logger.exception(f"An error occurred while fetching listings from {self.url}")
+            logger.exception(f"An unexpected error occurred: {e}")
+
+        return []
+
+    def _extract_json_data(self, html_content: str) -> str:
+        """
+        Extracts JSON data from the HTML content.
+
+        :param html_content: The HTML content as a string.
+        :return: The extracted JSON data as a string.
+        """
+        try:
+            start_index = html_content.find(NEXT_DATA_START) + len(NEXT_DATA_START)
+            end_index = html_content.find(NEXT_DATA_END, start_index)
+            return html_content[start_index:end_index]
+        except ValueError:
+            logger.error("Failed to locate JSON data in the HTML content.")
+            return ""
+
+    def _extract_advert_summaries(self, parsed_data: dict) -> list[dict]:
+        """
+        Extracts advert summaries from the parsed JSON data.
+
+        :param parsed_data: The parsed JSON data.
+        :return: A list of advert summaries.
+        """
+        try:
+            return parsed_data[KEY_PROPS][KEY_PAGE_PROPS][KEY_SEARCH_RESULT][KEY_ADVERT_SUMMARY_LIST][KEY_ADVERT_SUMMARY]
+        except KeyError:
+            logger.error("Failed to extract advert summaries due to missing keys.")
             return []
+
+    def _process_single_listing(self, single_listing_before_conversion: dict):
+        """
+        Processes a single listing and appends it to the multiple listings.
+
+        :param single_listing_before_conversion: The raw listing data before conversion.
+        """
+        try:
+            # Flatten the attributes into the main dictionary
+            for attribute in single_listing_before_conversion[KEY_ATTRIBUTES][KEY_ATTRIBUTE]:
+                name = attribute['name'].lower()
+                value = attribute['values'][0]
+                single_listing_before_conversion[name] = int(value) if value.isdigit() else value
+
+            full_url = f"https://www.willhaben.at/iad/{single_listing_before_conversion['seo_url']}"
+
+            single_listing = SingleListing(full_url)
+            single_listing.update_dict(single_listing_before_conversion)
+
+            self.multiple_listings.append_listing(single_listing)
+        except KeyError as key_err:
+            logger.error(f"Failed to process a single listing due to missing key: {key_err}")

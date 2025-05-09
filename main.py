@@ -3,8 +3,6 @@ from listings_overview_fetcher import ListingsOverviewFetcher
 from multiple_listings import MultipleListings
 
 
-
-# Example usage
 if __name__ == "__main__":
     multiple_listings = MultipleListings()
 
@@ -12,5 +10,8 @@ if __name__ == "__main__":
 
     ListingsOverviewFetcher(url_query, multiple_listings).fetch_all_listings()
     multiple_listings.apply_function_to_each_listing(lambda listing: ListingDetailsFetcher(listing).fetch_and_set_single_listing_content())
+
+    multiple_listings.write_multiple_listings_to_txt_json_file()
+    multiple_listings.write_multiple_listings_to_csv_file()
 
     multiple_listings.pretty_print()

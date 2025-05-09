@@ -2,3 +2,5 @@
 /artifacts/
 /.nyc_output/
 /src/config.ini
+/out/listings.csv
+/out/listings.txt
