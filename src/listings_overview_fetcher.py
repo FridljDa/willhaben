@@ -4,6 +4,7 @@ import logging
 import requests
 
 from multiple_listings import MultipleListings
+from single_listing import SingleListing
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -25,6 +26,7 @@ class ListingsOverviewFetcher:
         :return: A list of dictionaries containing the listings.
         """
         logger.info(f"Fetching content from {self.url}")
+
         try:
             # Fetch the HTML content of the URL
             response = requests.get(self.url)
@@ -40,27 +42,22 @@ class ListingsOverviewFetcher:
             parsed_data = json.loads(json_data)
 
             # Extract and process the listings
-            listings = []
             advert_summaries = parsed_data['props']['pageProps']['searchResult']['advertSummaryList']['advertSummary']
-            for single_listing in advert_summaries:
+            for single_listing_before_conversion in advert_summaries:
                 # Flatten the attributes into the main dictionary
-                for attribute in single_listing['attributes']['attribute']:
+                for attribute in single_listing_before_conversion['attributes']['attribute']:
                     name = attribute['name'].lower()
                     value = attribute['values'][0]
-                    single_listing[name] = int(value) if value.isdigit() else value
+                    single_listing_before_conversion[name] = int(value) if value.isdigit() else value
 
-                # Remove unnecessary keys
-                keys_to_remove = ['attributes', 'contextLinkList', 'advertiserInfo', 'advertImageList']
-                for key in keys_to_remove:
-                    single_listing.pop(key, None)
+                full_url = 'https://www.willhaben.at/iad/' + single_listing_before_conversion['seo_url']
 
-                single_listing.add_key_value_pair(keyword,
-                                        self._get_element_next_to_string(
-                                            keyword))
+                single_listing = SingleListing(full_url)
+
+                single_listing.update_dict(single_listing_before_conversion)
 
                 self.multiple_listings.append_listing(single_listing)
 
-            return listings
 
         except Exception as e:
             print(f"An error occurred: {e}")

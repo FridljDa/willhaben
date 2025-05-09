@@ -72,9 +72,9 @@ class ListingDetailsFetcher:
 
         # Extract details next to keywords
         for key, keyword in self.KEYWORDS.items():
-            self.add_key_value_pair(keyword, self._get_element_next_to_string(keyword))
+            self.single_listing.add_key_value_pair(keyword, self._get_element_next_to_string(keyword))
 
         # Extract description
         description_element = self.soup.find(attrs=self.DESCRIPTION_SELECTOR)
-        self.add_key_value_pair("description",
+        self.single_listing.add_key_value_pair("description",
                                 description_element.text if description_element else "")
