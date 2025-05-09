@@ -1,4 +1,4 @@
-name: CI Workflow
+name: CI Test Lint Workflow
 
 on:
     push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
     uv-example:
-        name: python
+        name: CI Test Lint Workflow
         runs-on: ubuntu-latest
 
         steps:

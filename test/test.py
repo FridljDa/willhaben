@@ -1,5 +1,5 @@
 import unittest
-from src.get_listings import fetch_all_listings
+from src.listings_overview_fetcher import fetch_all_listings
 
 class TestWillhabenAPI(unittest.TestCase):
     def test_should_return_results(self):

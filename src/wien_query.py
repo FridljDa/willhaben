@@ -1,7 +1,8 @@
 import json
+import os
 
-from src.get_listings import fetch_all_listings
-from get_single_listing import SingleListing
+from src.listings_overview_fetcher import fetch_all_listings
+from listing_details_fetcher import ListingDetailsFetcher
 
 url_query = 'https://www.willhaben.at/iad/immobilien/mietwohnungen/mietwohnung-angebote?sort=1&rows=30&isNavigation=true&sfId=7c07d0eb-68b5-46e8-8e40-e47a743a85b0&ESTATE_PREFERENCE=28&areaId=117223&areaId=117224&areaId=117225&areaId=117226&areaId=117227&areaId=117228&areaId=117229&areaId=117230&areaId=117231&page=1&PRICE_FROM=0&PRICE_TO=1100&ESTATE_SIZE/LIVING_AREA_FROM=40'
 
@@ -9,7 +10,7 @@ listings = fetch_all_listings(url_query)
 
 for listing in listings:
     listing['full_url'] = 'https://www.willhaben.at/iad/' + listing['seo_url']
-    more_keys = (SingleListing(listing['full_url']).get_listing_dict())
+    more_keys = (ListingDetailsFetcher(listing['full_url']).get_listing_dict())
     listing.update(more_keys)
 
 # Filter the listings to include only the selected keys
@@ -24,7 +25,7 @@ print(json.dumps(listings, indent=4, ensure_ascii=False))
 print(f"Number of listings: {len(listings)}")
 
 # Save listings to a JSON file
-with open('../out/listings.txt', 'w', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(__file__), '..', 'out', 'listings.txt'), 'w', encoding='utf-8') as f:
     json.dump(listings, f, indent=4, ensure_ascii=False)
 
 #keywords = ['sublet', 'months', 'october', 'december', 'monate', 'kurzzeit']

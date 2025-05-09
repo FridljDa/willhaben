@@ -7,7 +7,7 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["requests","pip", "beautifulsoup4", "openai", "colorama", 'pylint', "pytest"]
+dependencies = ["requests","pip", "beautifulsoup4", "openai", "colorama", 'pylint', "pytest", "pandas"]
 
 [tool.ruff]
 # Set the maximum line length to 79.
