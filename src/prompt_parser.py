@@ -1,8 +1,6 @@
 import os.path
-import re
 from enum import Enum
 from string import Template
-from typing import Any
 
 import config
 from config import positive_list, negative_list
