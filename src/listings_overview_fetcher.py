@@ -1,8 +1,6 @@
 import json
 import logging
-
 import requests
-
 from multiple_listings import MultipleListings
 from single_listing import SingleListing
 
@@ -10,18 +8,28 @@ from single_listing import SingleListing
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Constants for extracting JSON data
+NEXT_DATA_START = '<script id="__NEXT_DATA__" type="application/json">'
+NEXT_DATA_END = '</script>'
+
 class ListingsOverviewFetcher:
     """
-    Fetches listings from a given URL and processes the data.
+    Fetches and processes listings from a given URL.
     """
 
-    def __init__(self, url, multiple_listings: MultipleListings):
+    def __init__(self, url: str, multiple_listings: MultipleListings):
+        """
+        Initializes the fetcher with a URL and a MultipleListings instance.
+
+        :param url: The URL to fetch listings from.
+        :param multiple_listings: An instance of MultipleListings to store the processed listings.
+        """
         self.url = url
         self.multiple_listings = multiple_listings
 
     def fetch_all_listings(self):
         """
-        Gets the listings from a URL.
+        Fetches and processes listings from the URL.
 
         :return: A list of dictionaries containing the listings.
         """
@@ -34,10 +42,8 @@ class ListingsOverviewFetcher:
             html_content = response.text
 
             # Extract the JSON data from the <script> tag
-            start_marker = '<script id="__NEXT_DATA__" type="application/json">'
-            end_marker = '</script>'
-            start_index = html_content.find(start_marker) + len(start_marker)
-            end_index = html_content.find(end_marker, start_index)
+            start_index = html_content.find(NEXT_DATA_START) + len(NEXT_DATA_START)
+            end_index = html_content.find(NEXT_DATA_END, start_index)
             json_data = html_content[start_index:end_index]
             parsed_data = json.loads(json_data)
 
@@ -50,15 +56,13 @@ class ListingsOverviewFetcher:
                     value = attribute['values'][0]
                     single_listing_before_conversion[name] = int(value) if value.isdigit() else value
 
-                full_url = 'https://www.willhaben.at/iad/' + single_listing_before_conversion['seo_url']
+                full_url = f"https://www.willhaben.at/iad/{single_listing_before_conversion['seo_url']}"
 
                 single_listing = SingleListing(full_url)
-
                 single_listing.update_dict(single_listing_before_conversion)
 
                 self.multiple_listings.append_listing(single_listing)
 
-
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logger.exception(f"An error occurred while fetching listings from {self.url}")
             return []
