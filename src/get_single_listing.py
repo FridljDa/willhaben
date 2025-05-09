@@ -1,104 +1,111 @@
+import json
+import logging
+from typing import Optional, Dict
+
 import requests
+from requests.exceptions import HTTPError, ConnectionError, Timeout, RequestException
 from bs4 import BeautifulSoup
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class SingleListing:
     """
     A class to represent a single listing.
     """
 
-    soup = BeautifulSoup()
+    # Constants for selectors
+    DESCRIPTION_SELECTOR = {"data-testid": "ad-description-Objektbeschreibung"}
 
-    url = str()
-    wh_code = str()
-    description = str()
-    availability_start = str()
-    availability_duration = str()
-    number_rooms = str()
-    size2 = str()
+    # Constants for next keywords
+    KEYWORDS = {
+        "availability_start": "Verfügbar",
+        "availability_duration": "Befristung",
+        "number_rooms": "Zimmer",
+        "size2": "Wohnfläche"
+    }
 
-    def __init__(self, url):
+    def __init__(self, url: str) -> None:
         self.url = url
-        self.soup = self.get_soup()
 
-    def get_soup(self):
+        self.listing_data = {
+            "url": url
+        }
+
+        try:
+            self.soup = self._fetch_soup()
+            self._fetch_set_single_listing_content()
+        except Exception as e:
+            logger.error(f"Failed to initialize SingleListing: {e}")
+            self.soup = None
+
+    def _fetch_soup(self) -> BeautifulSoup:
         """
         Fetches the HTML content of a URL and returns a BeautifulSoup object.
 
-        :param url: The URL to fetch.
         :return: A BeautifulSoup object of the page content.
+        :raises: Exception with detailed error message if the request fails.
         """
-        url = self.url
-        print('Getting listings from ' + url)
-        response = requests.get(url)
-        soup = BeautifulSoup(response.content, 'html.parser')
-        return soup
+        logger.info(f"Fetching content from {self.url}")
+        try:
+            response = requests.get(self.url, timeout=10)
+            response.raise_for_status()
+            return BeautifulSoup(response.content, 'html.parser')
+        except HTTPError as http_err:
+            logger.error(f"HTTP error occurred: {http_err}")
+            raise Exception(
+                f"HTTP error occurred while fetching {self.url}: {http_err}")
+        except ConnectionError as conn_err:
+            logger.error(f"Connection error occurred: {conn_err}")
+            raise Exception(
+                f"Connection error occurred while fetching {self.url}: {conn_err}")
+        except Timeout as timeout_err:
+            logger.error(f"Request timed out: {timeout_err}")
+            raise Exception(f"Request to {self.url} timed out: {timeout_err}")
+        except RequestException as req_err:
+            logger.error(f"An error occurred during the request: {req_err}")
+            raise Exception(
+                f"An error occurred while fetching {self.url}: {req_err}")
 
-    def get_element_next_to_string(self, string_find):
+    def _get_element_next_to_string(self, string_find: str) -> Optional[str]:
         """
-        Extracts the availability start date from the soup.
+        Extracts the text of the element next to a given string in the soup.
 
-        :param soup: BeautifulSoup object of the page content.
         :param string_find: The string to search for in the soup.
-        :return: The availability start date as a string, or None if not found.
+        :return: The text of the next element, or None if not found.
         """
-        soup = self.soup
-        element = soup.find(string=string_find)
+        element = self.soup.find(string=string_find)
         if element is None:
+            logger.warning(f"Element with string '{string_find}' not found in the HTML content.")
             return None
-        return element.find_next().text
+        next_element = element.find_next()
+        return next_element.text if next_element else None
 
-    def fetch_set_single_listing_content(self):
+    def _fetch_set_single_listing_content(self) -> None:
         """
-        Gets the listings from a URL.
-
-        :param url: The URL to fetch listings from.
-        :return: A dictionaries containing the listing.
+        Extracts and sets the listing details from the soup.
         """
+        # Extract wh_code from the URL
+        self.listing_data["wh_code"] = "".join(reversed([char for char in self.url[::-1] if
+                                         char.isnumeric() or char == "-"])).split(
+            "-")[0]
 
-        product_page = requests.get(self.url)
-        soup_pd = BeautifulSoup(product_page.content, 'html.parser')
+        # Extract details next to keywords
+        for key, keyword in self.KEYWORDS.items():
+            self.listing_data[key] = self._get_element_next_to_string(keyword)
 
-        for heading in soup_pd.find_all("title"):
-            heading_item = heading.text.strip("- willhaben")
+        # Extract description
+        description_element = self.soup.find(attrs=self.DESCRIPTION_SELECTOR)
+        self.listing_data["description"] = description_element.text if description_element else ""
 
-        wh_code = str()
-        for char in self.url[::-1]:
-            if char.isnumeric():
-                wh_code += char
-            elif char == "-":
-                break
-        self.wh_code = wh_code[::-1]
+        #logger.info(f"Extracted listing_data: {json.dumps(self.listing_data, indent=4)}") #TODO
 
-        self.description = (soup_pd
-                       .find(attrs={"data-testid": "ad-description-Objektbeschreibung"})
-                       .text)
 
-        self.availability_start = self.get_element_next_to_string("Verfügbar")
-        self.availability_duration = self.get_element_next_to_string("Befristung")
-        self.number_rooms = self.get_element_next_to_string("Zimmer")
-        self.size2 = self.get_element_next_to_string("Wohnfläche")
-
-    def get_listing_dict(self):
+    def get_listing_dict(self) -> Dict[str, Optional[str]]:
         """
-        Gets the listings from a URL.
+        Returns the listing details as a dictionary.
 
-        :param url: The URL to fetch listings from.
-        :return: A dictionaries containing the listing.
+        :return: A dictionary containing the listing details.
         """
-        self.fetch_set_single_listing_content()
-
-        listing = {
-            "availability_start": self.availability_start,
-            "availability_duration": self.availability_duration,
-            "description": self.description,
-            "number_rooms": self.number_rooms,
-            "size2": self.size2,
-            "wh_code": self.wh_code,
-            "url": self.url
-        }
-
-        return listing
-
-url_test = "https://www.willhaben.at/iad/immobilien/d/mietwohnungen/wien/wien-1030-landstrasse/provisionsfreie-moeblierte-wohnung-mit-perfekter-oeffentlicher-anbindung-in-1030-2007459668"
-res = (SingleListing(url_test).get_listing_dict())
-print(res)
+        return self.listing_data
