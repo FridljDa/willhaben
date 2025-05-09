@@ -1,28 +1,44 @@
 name: Example
 
+on:
+    push:
+        branches:
+        - master
+
 jobs:
-  uv-example:
-    name: python
-    runs-on: ubuntu-latest
+    uv-example:
+        name: python
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+        steps:
+            -   uses: actions/checkout@v4
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          # Install a specific version of uv.
-          version: "0.7.3"
+            -   name: Install uv
+                uses: astral-sh/setup-uv@v5
+                with:
+                    # Install a specific version of uv.
+                    version: "0.7.3"
 
-      - name: Set up Python
-        run: uv python install
+            -   name: Set up Python
+                run: uv python install
 
-      - name: Install the project
-        run: uv sync --locked --all-extras --dev
+            -   name: Install the project
+                run: uv sync --locked --all-extras --dev
 
-      - name: Run tests
-        run:  uv run test/test_single_listing.py
+            -   name: Run tests
+                run: uv run test/test_single_listing.py
 
-      - name: Analysing the code with pylint
-        run: |
-          pylint $(git ls-files '*.py')
+            -   name: Run all tests using pytest
+                run: uv run pytest
+
+            -   name: Lint code with Ruff
+                run: ruff check --output-format=github --target-version=py39
+
+            -   name: Check code formatting with Ruff
+                run: ruff format --diff --target-version=py39
+                continue-on-error: true
+
+            -   name: Analysing the code with pylint
+                run: |
+                    pylint $(git ls-files '*.py')
+
