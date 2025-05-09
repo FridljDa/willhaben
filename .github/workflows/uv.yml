@@ -25,20 +25,17 @@ jobs:
             -   name: Install the project
                 run: uv sync --locked --all-extras --dev
 
-            -   name: Run tests
-                run: uv run test/test_single_listing.py
+            -   name: Run all tests using pytest
+                run: uv run pytest
 
-            #-   name: Run all tests using pytest
-            #    run: uv run pytest
+            -   name: Lint code with Ruff
+                run: ruff check --output-format=github --target-version=py39
 
-            #-   name: Lint code with Ruff
-            #    run: ruff check --output-format=github --target-version=py39
+            -   name: Check code formatting with Ruff
+                run: ruff format --diff --target-version=py39
+                continue-on-error: true
 
-            #-   name: Check code formatting with Ruff
-            #    run: ruff format --diff --target-version=py39
-            #    continue-on-error: true
-
-            #-   name: Analysing the code with pylint
-            #    run: |
-            #        pylint $(git ls-files '*.py')
+            -   name: Analysing the code with pylint
+                run: |
+                    pylint $(git ls-files '*.py')
 
