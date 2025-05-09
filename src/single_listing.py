@@ -12,16 +12,8 @@ class SingleListing:
     A class to represent a single listing.
   """
 
-  def __init__(self, url: str) -> None:
-    self.url = url
-    self.listing_data = {"url": url}
-
-  @staticmethod
-  def _is_valid_url(url: str) -> bool:
-    """
-    Validates the URL format.
-    """
-    return re.match(r'^https?://', url) is not None
+  def __init__(self) -> None:
+    self.listing_data = {}
 
   def pretty_print(self) -> None:
     """h

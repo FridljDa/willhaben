@@ -8,6 +8,26 @@ if __name__ == "__main__":
 
     ListingsOverviewFetcher(url_query, multiple_listings).fetch_all_listings()
 
+    relevant_keys = [
+        "Verfügbar",
+        'location',
+                     'postcode',
+                     'description',
+                     'heading',
+                     'body_dyn',
+                     'price',
+                     'size',
+                     "orgname",
+                     "floor",
+                     "number_of_rooms",
+                     "rent/per_month_lettings",
+                     "address",
+
+                     'url'
+                     ]
+
+    multiple_listings.subselect_listing_keys_and(relevant_keys)
+
     multiple_listings.write_multiple_listings_to_txt_json_file()
     multiple_listings.write_multiple_listings_to_csv_file()
 

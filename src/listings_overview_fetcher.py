@@ -18,8 +18,25 @@ KEY_PAGE_PROPS = 'pageProps'
 KEY_SEARCH_RESULT = 'searchResult'
 KEY_LISTING_SUMMARY_LIST = 'advertSummaryList'
 KEY_LISTING_SUMMARY = 'advertSummary'
-KEY_ATTRIBUTES = 'attributes'
-KEY_ATTRIBUTE = 'attribute'
+
+#TODO make this a dictionary, key value what is should be translated to
+RELEVANT_CONCATENATED_KEYS_READABLE_KEYS = {
+        "Verfügbar": "Verfügbar",
+        'location': 'location',
+        'postcode': 'postcode',
+        'description' : 'description',
+        'heading' : 'heading',
+        'body_dyn' : 'body_dyn',
+        'price' : 'price',
+        'size' : 'size',
+        "orgname" : "orgname",
+        "floor" : "floor",
+        "number_of_rooms" : "number_of_rooms",
+        "rent/per_month_lettings" : 'rent_per_month_lettings',
+        "address" : "address",
+        'url': 'url'
+}
+
 
 class ListingsOverviewFetcher:
     """
@@ -74,8 +91,7 @@ class ListingsOverviewFetcher:
             logger.exception(f"JSON parsing error: {json_err}")
         except KeyError as key_err:
             logger.exception(f"Missing expected key in JSON data: {key_err}")
-        except Exception as e:
-            logger.exception(f"An unexpected error occurred: {e}")
+        except Exception as e:            logger.exception(f"An unexpected error occurred: {e}")
 
     @staticmethod
     def _extract_json_data(html_content: str) -> str:
@@ -107,24 +123,34 @@ class ListingsOverviewFetcher:
             logger.error("Failed to extract listing summaries due to missing keys.")
             return []
 
-    def _process_single_listing(self, single_listing_before_conversion: dict):
+    @staticmethod
+    def _flatten_nested_dict(nested_dict: dict, parent_key ="", sep = "") -> dict:
+        items = []
+        for k, v in nested_dict.items():
+            new_key = parent_key + sep + k if parent_key else k
+            #items.append(new_key)
+            if isinstance(v, dict):
+                items.extend(ListingsOverviewFetcher._flatten_nested_dict(v, new_key, sep))
+            else:
+                items.append((new_key, v))
+        return dict(items)
+
+
+    def _process_single_listing(self, single_listing_before_conversion: dict) -> SingleListing:
         """
         Processes a single listing and appends it to the multiple listings.
 
         :param single_listing_before_conversion: The raw listing data before conversion.
         """
-        try:
-            # Flatten the attributes into the main dictionary
-            for attribute in single_listing_before_conversion[KEY_ATTRIBUTES][KEY_ATTRIBUTE]:
-                name = attribute['name'].lower()
-                value = attribute['values'][0]
-                single_listing_before_conversion[name] = int(value) if value.isdigit() else value
+        single_listing = SingleListing()
+        flattened_single_listing_before_conversion = ListingsOverviewFetcher._flatten_nested_dict(single_listing_before_conversion)
+        for concat_key, readable_key in RELEVANT_CONCATENATED_KEYS_READABLE_KEYS.items():
+            try:
+                value = flattened_single_listing_before_conversion[concat_key]
+                value = int(value) if value.isdigit() else value
+                single_listing.add_key_value_pair(readable_key, value)
+                self.multiple_listings.append_listing(single_listing)
 
-            full_url = f"https://www.willhaben.at/iad/{single_listing_before_conversion['seo_url']}"
-
-            single_listing = SingleListing(full_url)
-            single_listing.update_dict(single_listing_before_conversion)
-
-            self.multiple_listings.append_listing(single_listing)
-        except KeyError as key_err:
-            logger.error(f"Failed to process a single listing due to missing key: {key_err}")
+            except KeyError as key_err:
+                logger.error(f"Failed to process a single listing due to missing key: {key_err}")
+        return single_listing
