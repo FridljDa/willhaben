@@ -1,10 +1,10 @@
 import unittest
-from src.get_listings import get_listings
+from src.get_listings import fetch_all_listings
 
 class TestWillhabenAPI(unittest.TestCase):
     def test_should_return_results(self):
         url = 'https://willhaben.at/iad/kaufen-und-verkaufen/marktplatz/pc-komponenten-5878'
-        listings = get_listings(url)
+        listings = fetch_all_listings(url)
         self.assertNotEqual(len(listings), 0, "length of result is not 0")
 
 if __name__ == '__main__':

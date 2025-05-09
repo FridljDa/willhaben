@@ -1,13 +1,7 @@
-# approach 1
-import requests
 import json
-
-# approach 2
 import requests
 
-
-
-def get_listings(url):
+def fetch_all_listings(url):
     """
     Gets the listings from a URL.
 
