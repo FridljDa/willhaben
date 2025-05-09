@@ -16,8 +16,8 @@ NEXT_DATA_END = '</script>'
 KEY_PROPS = 'props'
 KEY_PAGE_PROPS = 'pageProps'
 KEY_SEARCH_RESULT = 'searchResult'
-KEY_ADVERT_SUMMARY_LIST = 'advertSummaryList'
-KEY_ADVERT_SUMMARY = 'advertSummary'
+KEY_LISTING_SUMMARY_LIST = 'advertSummaryList'
+KEY_LISTING_SUMMARY = 'advertSummary'
 KEY_ATTRIBUTES = 'attributes'
 KEY_ATTRIBUTE = 'attribute'
 
@@ -54,22 +54,19 @@ class ListingsOverviewFetcher:
             json_data = self._extract_json_data(html_content)
             if not json_data:
                 logger.error("Failed to extract JSON data from the HTML content.")
-                return []
 
             parsed_data = json.loads(json_data)
 
             # Validate and extract listings
-            advert_summaries = self._extract_advert_summaries(parsed_data)
-            if not advert_summaries:
-                logger.error("No advert summaries found in the JSON data.")
-                return []
+            listings_summary = self._extract_listings_summary(parsed_data)
+            if not listings_summary:
+                logger.error("No listing summaries found in the JSON data.")
 
             # Process each listing
-            for single_listing_before_conversion in advert_summaries:
+            for single_listing_before_conversion in listings_summary:
                 self._process_single_listing(single_listing_before_conversion)
 
-            logger.info(f"Successfully fetched and processed {len(advert_summaries)} listings.")
-            return advert_summaries
+            logger.info(f"Successfully fetched and processed {len(listings_summary)} listings.")
 
         except requests.RequestException as req_err:
             logger.exception(f"HTTP error occurred while fetching listings: {req_err}")
@@ -79,8 +76,6 @@ class ListingsOverviewFetcher:
             logger.exception(f"Missing expected key in JSON data: {key_err}")
         except Exception as e:
             logger.exception(f"An unexpected error occurred: {e}")
-
-        return []
 
     def _extract_json_data(self, html_content: str) -> str:
         """
@@ -97,17 +92,17 @@ class ListingsOverviewFetcher:
             logger.error("Failed to locate JSON data in the HTML content.")
             return ""
 
-    def _extract_advert_summaries(self, parsed_data: dict) -> list[dict]:
+    def _extract_listings_summary(self, parsed_data: dict) -> list[dict]:
         """
-        Extracts advert summaries from the parsed JSON data.
+        Extracts listing summaries from the parsed JSON data.
 
         :param parsed_data: The parsed JSON data.
-        :return: A list of advert summaries.
+        :return: A list of listing summaries.
         """
         try:
-            return parsed_data[KEY_PROPS][KEY_PAGE_PROPS][KEY_SEARCH_RESULT][KEY_ADVERT_SUMMARY_LIST][KEY_ADVERT_SUMMARY]
+            return parsed_data[KEY_PROPS][KEY_PAGE_PROPS][KEY_SEARCH_RESULT][KEY_LISTING_SUMMARY_LIST][KEY_LISTING_SUMMARY]
         except KeyError:
-            logger.error("Failed to extract advert summaries due to missing keys.")
+            logger.error("Failed to extract listing summaries due to missing keys.")
             return []
 
     def _process_single_listing(self, single_listing_before_conversion: dict):
