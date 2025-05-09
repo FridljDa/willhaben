@@ -20,10 +20,8 @@ jobs:
       - name: Install the project
         run: uv sync --locked --all-extras --dev
 
-      #- name: Run tests
-        # For example, using `pytest`
-        #run: uv run pytest tests
-        #TODO
+      - name: Run tests
+        run:  uv run test/test_single_listing.py
 
       - name: Analysing the code with pylint
         run: |
