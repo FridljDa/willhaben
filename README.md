@@ -34,6 +34,9 @@ uv sync --all-groups
 
 In your IDE, set the project's Python interpreter to `</absolute/path/to/project_root>/.venv/bin/python` as described https://www.jetbrains.com/help/idea/configuring-python-sdk.html#existing-virtual-environment.
 
+```sh
+uv run main.py
+```
 
 
 #### Extract results directly from URL

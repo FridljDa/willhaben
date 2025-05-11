@@ -1,8 +1,8 @@
 import json
 import logging
 import requests
-from multiple_listings import MultipleListings
-from single_listing import SingleListing
+from src.multiple_listings import MultipleListings
+from src.single_listing import SingleListing
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -77,7 +77,8 @@ class ListingsOverviewFetcher:
         except Exception as e:
             logger.exception(f"An unexpected error occurred: {e}")
 
-    def _extract_json_data(self, html_content: str) -> str:
+    @staticmethod
+    def _extract_json_data(html_content: str) -> str:
         """
         Extracts JSON data from the HTML content.
 
@@ -92,7 +93,8 @@ class ListingsOverviewFetcher:
             logger.error("Failed to locate JSON data in the HTML content.")
             return ""
 
-    def _extract_listings_summary(self, parsed_data: dict) -> list[dict]:
+    @staticmethod
+    def _extract_listings_summary(parsed_data: dict) -> list[dict]:
         """
         Extracts listing summaries from the parsed JSON data.
 

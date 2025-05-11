@@ -5,7 +5,7 @@ import requests
 from requests.exceptions import HTTPError, ConnectionError, Timeout, RequestException
 from bs4 import BeautifulSoup
 
-from single_listing import SingleListing
+from src.single_listing import SingleListing
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

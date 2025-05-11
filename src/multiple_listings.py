@@ -1,15 +1,15 @@
 import json
 import os
+from pathlib import Path
 
 import pandas as pd
 
-from single_listing import SingleListing
+from src.single_listing import SingleListing
 
 
 class MultipleListings:
   def __init__(self, path: str = None) -> None:
-    self.path_json = os.path.join(os.path.dirname(__file__), '..', 'out',
-                                  'listings.txt')
+    self.path_json = Path(__file__).resolve().parent.parent / 'out' / 'listings.txt'
     self.path_csv = os.path.join(os.path.dirname(__file__), '..', 'out',
                                  'listings.csv')
     if path is None:
@@ -55,6 +55,11 @@ class MultipleListings:
     """
     # convert list_of_listings to a list of dictionaries
     list_of_dictionary_listing = self.list_of_listings_to_dict()
+
+    if not os.path.exists(self.path_json):
+      os.makedirs(os.path.dirname(self.path_json), exist_ok=True)
+      with open(self.path_json, 'w', encoding='utf-8') as f:
+        pass
 
     with open(self.path_json, 'w', encoding='utf-8') as f:
       json.dump(list_of_dictionary_listing, f, indent=4, ensure_ascii=False)
