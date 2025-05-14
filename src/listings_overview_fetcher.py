@@ -1,5 +1,8 @@
 import json
 import logging
+from pathlib import Path
+from urllib.parse import urlparse
+
 import requests
 
 from listing_details_fetcher import ListingDetailsFetcher
@@ -36,6 +39,20 @@ class ListingsOverviewFetcher:
         self.url = url
         self.multiple_listings = multiple_listings
 
+    @staticmethod
+    def fetch_html(url_path: str) -> str:
+        parsed = urlparse(url_path)
+        if parsed.scheme in ("http", "https"):
+            # It's a URL
+            response = requests.get(url_path)
+            response.raise_for_status()
+            return response.text
+        else:
+            # It's a local file path
+            file_path = Path(url_path)
+            return file_path.read_text(encoding="utf-8")
+
+
     def fetch_all_listings(self):
         """
         Fetches and processes listings from the URL.
@@ -46,10 +63,9 @@ class ListingsOverviewFetcher:
 
         try:
             # Fetch the HTML content of the URL
-            response = requests.get(self.url)
-            response.raise_for_status()
-            html_content = response.text
+            html_content = self.fetch_html(self.url)
 
+            print(html_content)
             # Extract the JSON data from the <script> tag
             json_data = self._extract_json_data(html_content)
             if not json_data:

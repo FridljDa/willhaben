@@ -1,4 +1,4 @@
-import os.path
+import os.path #TODO replace by modern from pathlib import Path
 from enum import Enum
 from string import Template
 
