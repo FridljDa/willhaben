@@ -124,7 +124,7 @@ class ListingsOverviewFetcher:
             return []
 
     @staticmethod
-    def _flatten_nested_dict(nested_dict: dict, parent_key="", sep="") -> dict:
+    def _flatten_nested_dict(nested_dict: dict, parent_key="", sep="_") -> dict:
         items = []
         for k, v in nested_dict.items():
             new_key = parent_key + sep + k if parent_key else k
