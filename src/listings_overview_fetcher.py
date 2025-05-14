@@ -144,14 +144,6 @@ class ListingsOverviewFetcher:
         :param single_listing_before_conversion: The raw listing data before conversion.
         """
         single_listing = SingleListing()
-        flattened_single_listing_before_conversion = ListingsOverviewFetcher._flatten_nested_dict(single_listing_before_conversion)
-        for concat_key, readable_key in RELEVANT_CONCATENATED_KEYS_READABLE_KEYS.items():
-            try:
-                value = flattened_single_listing_before_conversion[concat_key]
-                value = int(value) if value.isdigit() else value
-                single_listing.add_key_value_pair(readable_key, value)
-                self.multiple_listings.append_listing(single_listing)
-
-            except KeyError as key_err:
-                logger.error(f"Failed to process a single listing due to missing key: {key_err}")
+        url = 'https://www.willhaben.at/iad/immobilien/' + single_listing_before_conversion['attributes']['attribute'][19]
+        single_listing.add_key_value_pair('url', url)
         return single_listing
