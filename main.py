@@ -26,7 +26,7 @@ if __name__ == "__main__":
                      'url'
                      ]
 
-    multiple_listings.subselect_listing_keys_and(relevant_keys)
+    #multiple_listings.subselect_listing_keys_and(relevant_keys)
 
     multiple_listings.write_multiple_listings_to_txt_json_file()
     multiple_listings.write_multiple_listings_to_csv_file()

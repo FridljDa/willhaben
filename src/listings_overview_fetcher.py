@@ -1,6 +1,8 @@
 import json
 import logging
 import requests
+
+from listing_details_fetcher import ListingDetailsFetcher
 from src.multiple_listings import MultipleListings
 from src.single_listing import SingleListing
 
@@ -18,25 +20,6 @@ KEY_PAGE_PROPS = 'pageProps'
 KEY_SEARCH_RESULT = 'searchResult'
 KEY_LISTING_SUMMARY_LIST = 'advertSummaryList'
 KEY_LISTING_SUMMARY = 'advertSummary'
-
-#TODO make this a dictionary, key value what is should be translated to
-RELEVANT_CONCATENATED_KEYS_READABLE_KEYS = {
-        "Verfügbar": "Verfügbar",
-        'location': 'location',
-        'postcode': 'postcode',
-        'description' : 'description',
-        'heading' : 'heading',
-        'body_dyn' : 'body_dyn',
-        'price' : 'price',
-        'size' : 'size',
-        "orgname" : "orgname",
-        "floor" : "floor",
-        "number_of_rooms" : "number_of_rooms",
-        "rent/per_month_lettings" : 'rent_per_month_lettings',
-        "address" : "address",
-        'url': 'url'
-}
-
 
 class ListingsOverviewFetcher:
     """
@@ -137,6 +120,7 @@ class ListingsOverviewFetcher:
         return dict(items)
 
 
+
     def _process_single_listing(self, single_listing_before_conversion: dict) -> SingleListing:
         """
         Processes a single listing and appends it to the multiple listings.
@@ -144,6 +128,10 @@ class ListingsOverviewFetcher:
         :param single_listing_before_conversion: The raw listing data before conversion.
         """
         single_listing = SingleListing()
-        url = 'https://www.willhaben.at/iad/immobilien/' + single_listing_before_conversion['attributes']['attribute'][19]
+        url = 'https://www.willhaben.at/iad/' + single_listing_before_conversion['attributes']['attribute'][19]['values'][0]#['values']
         single_listing.add_key_value_pair('url', url)
+
+        ListingDetailsFetcher.fetch_and_set_single_listing_content(single_listing)
+        #TODO fetch the details of the listing
+        self.multiple_listings.append_listing(single_listing)
         return single_listing
