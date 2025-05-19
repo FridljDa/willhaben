@@ -12,28 +12,47 @@ if __name__ == "__main__":
     )
 
     relevant_keys = [
-        "Verfügbar",
-        'location',
-                     'postcode',
-                     'description',
-                     'heading',
-                     'body_dyn',
-                     'price',
-                     'size',
-                     "orgname",
-                     "floor",
-                     "number_of_rooms",
-                     "rent/per_month_lettings",
-                     "address",
-
-                     'url'
-                     ]
-
-    #multiple_listings.subselect_listing_keys_and(relevant_keys)
+        'ADDITIONAL_COST/DEPOSIT',
+        'ADDITIONAL_COST/FEE',
+        'AVAILABLE_DATE',
+        'BUILDING_CONDITION',
+        'BUILDING_TYPE',
+        'Befristung',
+        'DESCRIPTION',
+        'DURATION/HASTERMLIMIT',
+        'DURATION/TERMLIMITTEXT',
+        'ESTATE_PREFERENCE',
+        'ESTATE_SIZE',
+        'ESTATE_SIZE/LIVING_AREA',
+        'FLOOR',
+        'FLOOR_SURFACE',
+        'GENERAL_TEXT_ADVERT/Lage',
+        'GENERAL_TEXT_ADVERT/Sonstiges',
+        'HEATING',
+        'ISPRIVATE',
+        'LOCATION/ADDRESS_1',
+        'LOCATION/ADDRESS_2',
+        'LOCATION/ADDRESS_3',
+        'LOCATION/ADDRESS_4',
+        'NO_OF_ROOMS',
+        'OWNAGETYPE',
+        'PRICE',
+        'PRICE_FOR_DISPLAY',
+        'PROPERTY_TYPE',
+        'PROPERTY_TYPE_FLAT',
+        'RENTAL_PRICE/ADDITIONAL_COST_GROSS',
+        'RENTAL_PRICE/HEATINGCOSTSGROSS',
+        'RENTAL_PRICE/PER_MONTH',
+        'RENTAL_PRICE/PER_MONTH_FOR_DISPLAY',
+        'RENTAL_PRICE/TOTAL_ENCUMBRANCE',
+        'Verfuegbarkeit',
+        'available_date',
+        'url'
+    ]
+    multiple_listings.subselect_listing_keys_and(relevant_keys)
 
     multiple_listings.write_multiple_listings_to_txt_json_file()
     multiple_listings.write_multiple_listings_to_csv_file()
 
     multiple_listings.pretty_print()
     print(f"Number of listings: {len(multiple_listings.list_of_listings)}")
-

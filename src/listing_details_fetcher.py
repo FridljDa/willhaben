@@ -13,38 +13,7 @@ NEXT_DATA_END = '</script>'
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-#TODO make this a dictionary, key value what is should be translated to
-RELEVANT_CONCATENATED_KEYS_READABLE_KEYS = {
-        "Verfügbar": "Verfügbar",
-        'location': 'location',
-        'postcode': 'postcode',
-        'description' : 'description',
-        'heading' : 'heading',
-        'body_dyn' : 'body_dyn',
-        'price' : 'price',
-        'size' : 'size',
-        "orgname" : "orgname",
-        "floor" : "floor",
-        "number_of_rooms" : "number_of_rooms",
-        "rent/per_month_lettings" : 'rent_per_month_lettings',
-        "address" : "address",
-        'url': 'url'
-}
-
 class ListingDetailsFetcher:
-
-    # Constants for selectors
-    DESCRIPTION_SELECTOR = {"data-testid": "ad-description-Objektbeschreibung"}
-
-    # Constants for next keywords
-    KEYWORDS = {
-        "availability_start": "Verfügbar",
-        "availability_duration": "Befristung",
-        "number_rooms2": "Zimmer",
-        "size2": "Wohnfläche"
-    }
-
-    DESCRIPTION_KEY = "description"
 
     #def __init__(self, single_listing: SingleListing) -> None:
    #     self.single_listing = single_listing
@@ -65,24 +34,6 @@ class ListingDetailsFetcher:
             return ""
 
     @staticmethod
-    def extract_listing_data(parsed_data_input: dict, key_path: list,
-        default_value: str) -> str:
-      """
-      Extracts a value from a nested dictionary using a list of keys.
-
-      :param parsed_data_input: The nested dictionary to extract data from.
-      :param key_path: A list of keys representing the path to the desired value.
-      :param default_value: The value to return if the key path is not found.
-      :return: The extracted value or the default value.
-      """
-      try:
-        for key in key_path:
-          parsed_data_input = parsed_data_input[key]
-        return parsed_data_input
-      except KeyError:
-        return default_value
-
-    @staticmethod
     def fetch_and_set_single_listing_content(single_listing: SingleListing) -> None:
         """
         Extracts and sets the listing details from the soup.
@@ -100,28 +51,6 @@ class ListingDetailsFetcher:
             logger.error("Failed to extract JSON data from the HTML content.")
 
         parsed_data = json.loads(json_data)
-
-        single_listing.listing_data['Befristung'] = ListingDetailsFetcher.extract_listing_data(
-            parsed_data,
-            ['props', 'pageProps', 'advertDetails', 'advertisingParameters',
-             'Befristung'],
-            "unbekannt"
-        )
-
-        single_listing.listing_data['Verfuegbarkeit'] = ListingDetailsFetcher.extract_listing_data(
-            parsed_data,
-            ['props', 'pageProps', 'advertDetails', 'advertisingParameters',
-             'Verfuegbarkeit'],
-            "unbekannt"
-        )
-
-        single_listing.listing_data[
-          'available_date'] = ListingDetailsFetcher.extract_listing_data(
-            parsed_data,
-            ['props', 'pageProps', 'advertDetails', 'attributes',
-             'attribute', 9, 'values', 0],
-            "unbekannt"
-        )
 
         listing_attribute = parsed_data['props']['pageProps']['advertDetails']['attributes']['attribute']
         for listing_attribute_key_value in listing_attribute:
