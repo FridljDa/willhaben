@@ -114,3 +114,15 @@ class ListingDetailsFetcher:
              'Verfuegbarkeit'],
             "unbekannt"
         )
+
+        single_listing.listing_data[
+          'available_date'] = ListingDetailsFetcher.extract_listing_data(
+            parsed_data,
+            ['props', 'pageProps', 'advertDetails', 'attributes',
+             'attribute', 9, 'values', 0],
+            "unbekannt"
+        )
+
+        listing_attribute = parsed_data['props']['pageProps']['advertDetails']['attributes']['attribute']
+        for listing_attribute_key_value in listing_attribute:
+          single_listing.listing_data[listing_attribute_key_value["name"]] = listing_attribute_key_value["values"]
