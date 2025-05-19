@@ -49,6 +49,7 @@ class ListingsOverviewFetcher:
             # It's a URL
             response = requests.get(url_path)
             response.raise_for_status()
+            #TODO use json_handler.JsonHandler.fetch_json_from_url
             return response.text
         else:
             # It's a local file path
