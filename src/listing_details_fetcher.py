@@ -65,6 +65,24 @@ class ListingDetailsFetcher:
             return ""
 
     @staticmethod
+    def extract_listing_data(parsed_data_input: dict, key_path: list,
+        default_value: str) -> str:
+      """
+      Extracts a value from a nested dictionary using a list of keys.
+
+      :param parsed_data_input: The nested dictionary to extract data from.
+      :param key_path: A list of keys representing the path to the desired value.
+      :param default_value: The value to return if the key path is not found.
+      :return: The extracted value or the default value.
+      """
+      try:
+        for key in key_path:
+          parsed_data_input = parsed_data_input[key]
+        return parsed_data_input
+      except KeyError:
+        return default_value
+
+    @staticmethod
     def fetch_and_set_single_listing_content(single_listing: SingleListing) -> None:
         """
         Extracts and sets the listing details from the soup.
@@ -83,10 +101,16 @@ class ListingDetailsFetcher:
 
         parsed_data = json.loads(json_data)
 
-        try:
-            # Extract the description from the parsed JSON data
-            single_listing.listing_data['Befristung'] = parsed_data['props']['pageProps']['advertDetails'][
-              'advertisingParameters']['Befristung']
+        single_listing.listing_data['Befristung'] = ListingDetailsFetcher.extract_listing_data(
+            parsed_data,
+            ['props', 'pageProps', 'advertDetails', 'advertisingParameters',
+             'Befristung'],
+            "unbekannt"
+        )
 
-        except KeyError:
-            single_listing.listing_data['Befristung'] = "unbekannt"
+        single_listing.listing_data['Verfuegbarkeit'] = ListingDetailsFetcher.extract_listing_data(
+            parsed_data,
+            ['props', 'pageProps', 'advertDetails', 'advertisingParameters',
+             'Verfuegbarkeit'],
+            "unbekannt"
+        )

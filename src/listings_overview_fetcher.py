@@ -1,6 +1,7 @@
 import json
 import logging
 from pathlib import Path
+from typing import re
 from urllib.parse import urlparse
 
 import requests
@@ -36,6 +37,8 @@ class ListingsOverviewFetcher:
         :param url: The URL to fetch listings from.
         :param multiple_listings: An instance of MultipleListings to store the processed listings.
         """
+        # Replace &rows=<some number>& in the URL with &rows=1000&
+        #TODO fix self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
         self.url = url
         self.multiple_listings = multiple_listings
 
@@ -121,21 +124,6 @@ class ListingsOverviewFetcher:
             logger.error("Failed to extract listing summaries due to missing keys.")
             return []
 
-    @staticmethod
-    def _flatten_nested_dict(nested_dict: dict, parent_key="", sep="_") -> dict:
-        items = []
-        for k, v in nested_dict.items():
-            new_key = parent_key + sep + k if parent_key else k
-            if isinstance(v, dict):
-                items.extend(
-                    ListingsOverviewFetcher._flatten_nested_dict(v, new_key,
-                                                                 sep).items())
-            else:
-                items.append((new_key, v))
-        return dict(items)
-
-
-
     def _process_single_listing(self, single_listing_before_conversion: dict) -> None:
         """
         Processes a single listing and appends it to the multiple listings.
@@ -145,6 +133,6 @@ class ListingsOverviewFetcher:
         single_listing = SingleListing()
         seo_url = single_listing_before_conversion['attributes']['attribute'][19]['values'][0]
         if seo_url.startswith('immobilien/'):
-            url = 'https://www.willhaben.at/iad/' + single_listing_before_conversion['attributes']['attribute'][19]['values'][0]
+            url = 'https://www.willhaben.at/iad/' + seo_url
             single_listing.add_key_value_pair('url', url)
             self.multiple_listings.append_listing(single_listing)
