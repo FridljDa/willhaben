@@ -83,4 +83,10 @@ class ListingDetailsFetcher:
 
         parsed_data = json.loads(json_data)
 
-        single_listing.listing_data['Befristung'] = parsed_data['props']['pageProps']['advertDetails']['advertisingParameters']['Befristung']
+        try:
+            # Extract the description from the parsed JSON data
+            single_listing.listing_data['Befristung'] = parsed_data['props']['pageProps']['advertDetails'][
+              'advertisingParameters']['Befristung']
+
+        except KeyError:
+            single_listing.listing_data['Befristung'] = "unbekannt"

@@ -136,15 +136,15 @@ class ListingsOverviewFetcher:
 
 
 
-    def _process_single_listing(self, single_listing_before_conversion: dict) -> SingleListing:
+    def _process_single_listing(self, single_listing_before_conversion: dict) -> None:
         """
         Processes a single listing and appends it to the multiple listings.
 
         :param single_listing_before_conversion: The raw listing data before conversion.
         """
         single_listing = SingleListing()
-        url = 'https://www.willhaben.at/iad/' + single_listing_before_conversion['attributes']['attribute'][19]['values'][0]#['values']
-        single_listing.add_key_value_pair('url', url)
-
-        self.multiple_listings.append_listing(single_listing)
-        return single_listing
+        seo_url = single_listing_before_conversion['attributes']['attribute'][19]['values'][0]
+        if seo_url.startswith('immobilien/'):
+            url = 'https://www.willhaben.at/iad/' + single_listing_before_conversion['attributes']['attribute'][19]['values'][0]
+            single_listing.add_key_value_pair('url', url)
+            self.multiple_listings.append_listing(single_listing)
