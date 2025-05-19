@@ -65,7 +65,6 @@ class ListingsOverviewFetcher:
             # Fetch the HTML content of the URL
             html_content = self.fetch_html(self.url)
 
-            print(html_content)
             # Extract the JSON data from the <script> tag
             json_data = self._extract_json_data(html_content)
             if not json_data:
@@ -147,7 +146,5 @@ class ListingsOverviewFetcher:
         url = 'https://www.willhaben.at/iad/' + single_listing_before_conversion['attributes']['attribute'][19]['values'][0]#['values']
         single_listing.add_key_value_pair('url', url)
 
-        ListingDetailsFetcher.fetch_and_set_single_listing_content(single_listing)
-        #TODO fetch the details of the listing
         self.multiple_listings.append_listing(single_listing)
         return single_listing
