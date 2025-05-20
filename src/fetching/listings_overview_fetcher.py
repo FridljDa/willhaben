@@ -136,6 +136,7 @@ class ListingsOverviewFetcher:
             return []
 
     def _process_single_listing(self, single_listing_before_conversion: dict) -> None:
+        # TODO replace by fetcher._process_single_listing
         """
         Processes a single listing and appends it to the multiple listings.
 

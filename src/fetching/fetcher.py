@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import re
 
 import requests
 
@@ -9,13 +10,17 @@ logger = logging.getLogger(__name__)
 NEXT_DATA_START = '<script id="__NEXT_DATA__" type="application/json">'
 NEXT_DATA_END = '</script>'
 
-class JsonHandler:
+class Fetcher:
+  def __init__(self, url: str):
+    # Replace &rows=<some number>& in the URL with &rows=1000&
+    self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
+
   @staticmethod
   def fetch_json_from_url(url: str) -> dict:
     response = requests.get(url)
     response.raise_for_status()
     html_content = response.text
-    return JsonHandler.extract_json_data(html_content)
+    return Fetcher.extract_json_data(html_content)
 
   @staticmethod
   def extract_json_data(html_content: str) -> dict:

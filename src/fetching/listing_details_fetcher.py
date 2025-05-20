@@ -1,6 +1,6 @@
 import logging
 
-from fetching.fetcher import JsonHandler
+from fetching.fetcher import Fetcher
 from fetching.listings.single_listing import SingleListing
 
 # Configure logging
@@ -15,7 +15,7 @@ class ListingDetailsFetcher:
         Extracts and sets the listing details from the soup.
         """
         url = single_listing.listing_data['url']
-        parsed_data = JsonHandler.fetch_json_from_url(url)
+        parsed_data = Fetcher.fetch_json_from_url(url)
 
         listing_attribute = parsed_data['props']['pageProps']['advertDetails']['attributes']['attribute']
         for listing_attribute_key_value in listing_attribute:
