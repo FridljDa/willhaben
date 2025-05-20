@@ -1,5 +1,6 @@
 import json
 import logging
+import re  # Added for regex substitution
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -36,18 +37,24 @@ class ListingsOverviewFetcher:
         :param multiple_listings: An instance of MultipleListings to store the processed listings.
         """
         # Replace &rows=<some number>& in the URL with &rows=1000&
-        #TODO fix self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
-        self.url = url
+        self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
         self.multiple_listings = multiple_listings
 
     @staticmethod
     def fetch_html(url_path: str) -> str:
+        """
+        Fetches the HTML content from a URL or local file path.
+
+        :param url_path: The URL or file path to fetch content from.
+        :return: The HTML content as a string.
+        """
         parsed = urlparse(url_path)
         if parsed.scheme in ("http", "https"):
             # It's a URL
-            response = requests.get(url_path)
+            # Placeholder for json_handler.JsonHandler.fetch_json_from_url
+            # response = json_handler.JsonHandler.fetch_json_from_url(url_path)
+            response = requests.get(url_path)  # Fallback to requests for now
             response.raise_for_status()
-            #TODO use json_handler.JsonHandler.fetch_json_from_url
             return response.text
         else:
             # It's a local file path
@@ -102,11 +109,16 @@ class ListingsOverviewFetcher:
         :return: The extracted JSON data as a string.
         """
         try:
-            start_index = html_content.find(NEXT_DATA_START) + len(NEXT_DATA_START)
+            start_index = html_content.find(NEXT_DATA_START)
+            if start_index == -1:
+                raise ValueError("Start marker for JSON data not found.")
+            start_index += len(NEXT_DATA_START)
             end_index = html_content.find(NEXT_DATA_END, start_index)
+            if end_index == -1:
+                raise ValueError("End marker for JSON data not found.")
             return html_content[start_index:end_index]
-        except ValueError:
-            logger.error("Failed to locate JSON data in the HTML content.")
+        except ValueError as e:
+            logger.error(f"Failed to locate JSON data in the HTML content: {e}")
             return ""
 
     @staticmethod
