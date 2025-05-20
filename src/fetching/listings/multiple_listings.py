@@ -28,7 +28,7 @@ class MultipleListings:
         "Unsupported file type. Only .txt or .csv files are allowed.")
 
   def pretty_print(self) -> None:
-    """h
+    """
     Pretty prints the listing details in JSON format.
     """
     for listing in self.list_of_listings:
@@ -42,7 +42,7 @@ class MultipleListings:
 
   def read_and_return_multiple_listings_from_txt_json_file(self) -> list[SingleListing]:
     """
-    Reads the listing details from a text file in JSON format.
+    Reads the listing details from a JSON file and returns a list of SingleListing objects.
     """
     with open(self.path_json, 'r', encoding='utf-8') as f:
       list_of_listings_json = json.load(f)
@@ -50,22 +50,17 @@ class MultipleListings:
 
   def write_multiple_listings_to_txt_json_file(self) -> None:
     """
-    Writes the listing details to a text file in JSON format.
+    Writes the listing details to a JSON file.
     """
-    # convert list_of_listings to a list of dictionaries
     list_of_dictionary_listing = self.list_of_listings_to_dict()
 
-    if not os.path.exists(self.path_json):
-      os.makedirs(os.path.dirname(self.path_json), exist_ok=True)
-      with open(self.path_json, 'w', encoding='utf-8') as f:
-        pass
-
+    os.makedirs(os.path.dirname(self.path_json), exist_ok=True)
     with open(self.path_json, 'w', encoding='utf-8') as f:
       json.dump(list_of_dictionary_listing, f, indent=4, ensure_ascii=False)
 
   def read_and_return_multiple_listings_from_csv_file(self) -> list[SingleListing]:
     """
-    Reads the listing details from a text file in JSON format.
+    Reads the listing details from a CSV file and returns a list of SingleListing objects.
     """
     df = pd.read_csv(self.path_csv, encoding='utf-8')
     return [SingleListing() for _, row in df.iterrows()]
@@ -80,9 +75,16 @@ class MultipleListings:
     df.to_csv(self.path_csv, index=False, encoding='utf-8')
 
   def subselect_listing_keys_and(self, keys: list) -> None:
-    for listing in self.list_of_listings:
-      listing.listing_data =  {key: listing.listing_data.get(key, None) for key in keys}
+    """
+    Filters the listing data to only include specified keys.
 
+    Args:
+        keys (list): A list of keys to retain in each listing's data.
+    """
+    if not keys:
+      raise ValueError("The keys list cannot be empty.")
+    for listing in self.list_of_listings:
+      listing.listing_data = {key: listing.listing_data.get(key, None) for key in keys}
 
   def apply_function_to_each_listing(self, function) -> None:
     """
