@@ -4,6 +4,7 @@ import os
 import logging
 
 from project_root import PROJECT_ROOT
+from relevant_columns import dtypes_columns
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -14,11 +15,21 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # Define the path to the CSV file
 CSV_FILE_PATH = PROJECT_ROOT / 'out' / 'listings.csv'
 
+def parse_list(value):
+    """Parses a string representation of a list into an actual Python list."""
+    try:
+        return eval(value) if isinstance(value, str) and value.startswith('[') else value
+    except:
+        return value
+
+
 @app.route('/')
 def display_table():
     try:
         # Read the CSV file into a pandas DataFrame
         data = pd.read_csv(CSV_FILE_PATH)
+        #TODO use dtypes_columns
+        #TODO parse dates
         # Convert DataFrame to a list of dictionaries for easier rendering in template
         headers = data.columns.tolist()
         rows = data.values.tolist()
