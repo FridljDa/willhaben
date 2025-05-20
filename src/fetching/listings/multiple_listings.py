@@ -1,17 +1,16 @@
 import json
 import os
-from pathlib import Path
 
 import pandas as pd
 
 from fetching.listings.single_listing import SingleListing
-
+from project_root import PROJECT_ROOT
 
 class MultipleListings:
   def __init__(self, path: str = None) -> None:
-    self.path_json = Path(__file__).resolve().parent.parent / 'out' / 'listings.txt'
-    self.path_csv = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'out',
-                                 'listings.csv')
+    self.path_json = PROJECT_ROOT / 'out' / 'listings.txt'
+    self.path_csv = PROJECT_ROOT / 'out' / 'listings.csv'
+
     if path is None:
       self.list_of_listings: list[SingleListing] = []
     elif path.endswith('.txt'):
