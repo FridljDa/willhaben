@@ -1,14 +1,12 @@
 import json
 import logging
 from pathlib import Path
-from typing import re
 from urllib.parse import urlparse
 
 import requests
 
-from listing_details_fetcher import ListingDetailsFetcher
-from src.multiple_listings import MultipleListings
-from src.single_listing import SingleListing
+from fetching.listings.multiple_listings import MultipleListings
+from fetching.listings.single_listing import SingleListing
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

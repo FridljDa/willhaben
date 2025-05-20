@@ -1,10 +1,7 @@
-import json
 import logging
 
-import requests
-
-from json_handler import JsonHandler
-from src.single_listing import SingleListing
+from fetching.fetcher import JsonHandler
+from fetching.listings.single_listing import SingleListing
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

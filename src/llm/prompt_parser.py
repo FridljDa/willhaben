@@ -4,7 +4,7 @@ from string import Template
 
 import config
 from config import positive_list, negative_list
-from llm_endpoint import ask_llm
+from llm.llm_endpoint import ask_llm
 
 
 class LLmDecision(Enum):
