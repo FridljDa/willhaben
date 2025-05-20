@@ -100,6 +100,26 @@ class ListingsOverviewFetcher:
             logger.exception(f"Missing expected key in JSON data: {key_err}")
         except Exception as e:            logger.exception(f"An unexpected error occurred: {e}")
 
+    @staticmethod
+    def _extract_json_data(html_content: str) -> str:
+        """
+        Extracts JSON data from the HTML content.
+
+        :param html_content: The HTML content as a string.
+        :return: The extracted JSON data as a string.
+        """
+        try:
+            start_index = html_content.find(NEXT_DATA_START)
+            if start_index == -1:
+                raise ValueError("Start marker for JSON data not found.")
+            start_index += len(NEXT_DATA_START)
+            end_index = html_content.find(NEXT_DATA_END, start_index)
+            if end_index == -1:
+                raise ValueError("End marker for JSON data not found.")
+            return html_content[start_index:end_index]
+        except ValueError as e:
+            logger.error(f"Failed to locate JSON data in the HTML content: {e}")
+            return ""
 
     @staticmethod
     def _extract_listings_summary(parsed_data: dict) -> list[dict]:
@@ -116,7 +136,6 @@ class ListingsOverviewFetcher:
             return []
 
     def _process_single_listing(self, single_listing_before_conversion: dict) -> None:
-        #TODO replace by fetcher._process_single_listing
         """
         Processes a single listing and appends it to the multiple listings.
 
