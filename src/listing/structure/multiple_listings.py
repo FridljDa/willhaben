@@ -49,7 +49,7 @@ class MultipleListings:
     """
     with open(self.path_json, 'r', encoding='utf-8') as f:
       list_of_listings_json = json.load(f)
-      return [SingleListing() for listing in list_of_listings_json]
+      return [SingleListing() for _ in list_of_listings_json]
 
   def write_multiple_listings_to_txt_json_file(self) -> None:
     """

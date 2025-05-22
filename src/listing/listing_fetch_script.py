@@ -22,6 +22,3 @@ def fetch_and_process_listings(url_query):
   multiple_listings.pretty_print()
   print(f"Number of listings: {len(multiple_listings.list_of_listings)}")
 
-
-if __name__ == "__main__":
-  fetch_and_process_listings()
