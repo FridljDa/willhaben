@@ -25,8 +25,7 @@ class ListingDetailsFetcher(Fetcher):
     """
     Extracts and sets the listing details from the soup.
     """
-    parsed_data = Fetcher.fetch_content_as_json(
-        self.url)  # Use inherited method
+    parsed_data = self.fetch_content_as_json()
 
     listing_attribute = \
       parsed_data['props']['pageProps']['advertDetails']['attributes'][

@@ -44,7 +44,7 @@ class ListingsOverviewFetcher(Fetcher):
     logger.info(f"Fetching content from {self.url}")
 
     try:
-      parsed_data = Fetcher.fetch_content_as_json(self.url)
+      parsed_data = self.fetch_content_as_json()
 
       # Validate and extract listings
       listings_summary = self._extract_listings_summary(parsed_data)
