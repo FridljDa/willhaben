@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from fetching.listings_overview_fetcher import ListingsOverviewFetcher
+from fetching.fetcher.listings_overview_fetcher import ListingsOverviewFetcher
 from fetching.listings.multiple_listings import MultipleListings
 
 import unittest

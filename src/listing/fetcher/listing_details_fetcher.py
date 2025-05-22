@@ -1,7 +1,7 @@
 import logging
 
-from fetching.fetcher import Fetcher
-from fetching.listings.single_listing import SingleListing
+from listing.fetcher.fetcher import Fetcher
+from listing.structure.single_listing import SingleListing
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

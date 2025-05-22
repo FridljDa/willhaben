@@ -3,7 +3,7 @@ import os
 
 import pandas as pd
 
-from fetching.listings.single_listing import SingleListing
+from listing.structure.single_listing import SingleListing
 from project_root import PROJECT_ROOT
 
 class MultipleListings:

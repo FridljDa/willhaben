@@ -1,6 +1,6 @@
-from fetching.listing_details_fetcher import ListingDetailsFetcher
-from fetching.listings_overview_fetcher import ListingsOverviewFetcher
-from fetching.listings.multiple_listings import MultipleListings
+from listing.fetcher.listing_details_fetcher import ListingDetailsFetcher
+from listing.fetcher.listings_overview_fetcher import ListingsOverviewFetcher
+from listing.structure.multiple_listings import MultipleListings
 from relevant_columns import relevant_keys
 
 if __name__ == "__main__":

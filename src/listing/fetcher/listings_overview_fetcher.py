@@ -6,8 +6,8 @@ from urllib.parse import urlparse
 
 import requests
 
-from fetching.listings.multiple_listings import MultipleListings
-from fetching.listings.single_listing import SingleListing
+from listing.structure.multiple_listings import MultipleListings
+from listing.structure.single_listing import SingleListing
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
