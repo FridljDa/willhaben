@@ -18,25 +18,25 @@ class Fetcher:
     self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
 
   @staticmethod
-  def fetch_content_as_json(source: str) -> dict:
+  def fetch_content_as_json(url: str) -> dict:
     """
     Fetches the HTML content from a URL or local file path and extracts JSON data.
 
-    :param source: The URL or file path to fetch content from.
+    :param url: The URL or file path to fetch content from.
     :return: The extracted JSON data as a dictionary.
     """
-    parsed_url = urlparse(source)
+    parsed_url = urlparse(url)
     if parsed_url.scheme in ("http", "https"):
       # It's a URL
       # Placeholder for json_handler.JsonHandler.fetch_content_as_json
       # response = json_handler.JsonHandler.fetch_content_as_json(source)
-      response = requests.get(source)  # Fallback to requests for now
+      response = requests.get(url)  # Fallback to requests for now
       response.raise_for_status()
       html_content = response.text
       return Fetcher.extract_json_from_html(html_content)
     else:
       # It's a local file path
-      file_path = Path(source)
+      file_path = Path(url)
       html_content = file_path.read_text(encoding="utf-8")
       return json.loads(html_content)
 
