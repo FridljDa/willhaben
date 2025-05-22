@@ -8,10 +8,6 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = ["requests","pip", "Flask", "pandas"]
 
-# This line tells tools like uv/pip where your source code is
-# if it's not directly in the project root.
-packages = [{include = "src"}]
-
 [tool.uv]
 dev-dependencies = [
     "pytest",
