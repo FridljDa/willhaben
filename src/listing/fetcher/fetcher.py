@@ -1,6 +1,7 @@
 import json
 import logging
 from typing import re
+from urllib.parse import urlparse
 
 import requests
 
@@ -21,6 +22,27 @@ class Fetcher:
     response.raise_for_status()
     html_content = response.text
     return Fetcher.extract_json_data_dict(html_content)
+
+  @staticmethod
+  def fetch_html2(url_path: str) -> str:
+    """
+    Fetches the HTML content from a URL or local file path.
+
+    :param url_path: The URL or file path to fetch content from.
+    :return: The HTML content as a string.
+    """
+    parsed = urlparse(url_path)
+    if parsed.scheme in ("http", "https"):
+      # It's a URL
+      # Placeholder for json_handler.JsonHandler.fetch_json_from_url
+      # response = json_handler.JsonHandler.fetch_json_from_url(url_path)
+      response = requests.get(url_path)  # Fallback to requests for now
+      response.raise_for_status()
+      return response.text
+    else:
+      # It's a local file path
+      file_path = Path(url_path)
+      return file_path.read_text(encoding="utf-8")
 
   @staticmethod
   def extract_json_data_dict(html_content: str) -> dict:

@@ -41,27 +41,6 @@ class ListingsOverviewFetcher:
         self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
         self.multiple_listings = multiple_listings
 
-    @staticmethod
-    def fetch_html(url_path: str) -> str:
-        """
-        Fetches the HTML content from a URL or local file path.
-
-        :param url_path: The URL or file path to fetch content from.
-        :return: The HTML content as a string.
-        """
-        parsed = urlparse(url_path)
-        if parsed.scheme in ("http", "https"):
-            # It's a URL
-            # Placeholder for json_handler.JsonHandler.fetch_json_from_url
-            # response = json_handler.JsonHandler.fetch_json_from_url(url_path)
-            response = requests.get(url_path)  # Fallback to requests for now
-            response.raise_for_status()
-            return response.text
-        else:
-            # It's a local file path
-            file_path = Path(url_path)
-            return file_path.read_text(encoding="utf-8")
-
 
     def fetch_all_listings(self):
         """
@@ -73,7 +52,7 @@ class ListingsOverviewFetcher:
 
         try:
             # Fetch the HTML content of the URL
-            html_content = self.fetch_html(self.url)
+            html_content = Fetcher.fetch_html2(self.url)
 
             # Extract the JSON data from the <script> tag
             json_data = Fetcher.extract_json_data_str(html_content)
