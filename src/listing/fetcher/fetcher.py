@@ -1,7 +1,7 @@
 import json
 import logging
-from pathlib import Path
 import re
+from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 NEXT_DATA_START = '<script id="__NEXT_DATA__" type="application/json">'
 NEXT_DATA_END = '</script>'
+
 
 class Fetcher:
   def __init__(self, url: str):

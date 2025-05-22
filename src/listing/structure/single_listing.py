@@ -1,11 +1,11 @@
 import logging
 import pprint
-import re
 from typing import Dict, Optional
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class SingleListing:
   """
@@ -49,4 +49,3 @@ class SingleListing:
         self.listing_data[key] = value
       else:
         logger.debug(f"Key or value is None. Key: {key}, Value: {value}")
-

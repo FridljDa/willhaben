@@ -6,6 +6,7 @@ import pandas as pd
 from listing.structure.single_listing import SingleListing
 from project_root import PROJECT_ROOT
 
+
 class MultipleListings:
   def __init__(self, path: str = None) -> None:
     self.path_json = PROJECT_ROOT / 'out' / 'listings.txt'
@@ -25,7 +26,7 @@ class MultipleListings:
       self.list_of_listings = self.read_and_return_multiple_listings_from_csv_file()
     else:
       raise ValueError(
-        "Unsupported file type. Only .txt or .csv files are allowed.")
+          "Unsupported file type. Only .txt or .csv files are allowed.")
 
   def pretty_print(self) -> None:
     """
@@ -38,9 +39,11 @@ class MultipleListings:
     """
     Returns the listing details as a list of dictionaries.
     """
-    return [single_listing.listing_data for single_listing in self.list_of_listings]
+    return [single_listing.listing_data for single_listing in
+            self.list_of_listings]
 
-  def read_and_return_multiple_listings_from_txt_json_file(self) -> list[SingleListing]:
+  def read_and_return_multiple_listings_from_txt_json_file(self) -> list[
+    SingleListing]:
     """
     Reads the listing details from a JSON file and returns a list of SingleListing objects.
     """
@@ -58,7 +61,8 @@ class MultipleListings:
     with open(self.path_json, 'w', encoding='utf-8') as f:
       json.dump(list_of_dictionary_listing, f, indent=4, ensure_ascii=False)
 
-  def read_and_return_multiple_listings_from_csv_file(self) -> list[SingleListing]:
+  def read_and_return_multiple_listings_from_csv_file(self) -> list[
+    SingleListing]:
     """
     Reads the listing details from a CSV file and returns a list of SingleListing objects.
     """
@@ -84,7 +88,8 @@ class MultipleListings:
     if not keys:
       raise ValueError("The keys list cannot be empty.")
     for listing in self.list_of_listings:
-      listing.listing_data = {key: listing.listing_data.get(key, None) for key in keys}
+      listing.listing_data = {key: listing.listing_data.get(key, None) for key
+                              in keys}
 
   def apply_function_to_each_listing(self, function) -> None:
     """
