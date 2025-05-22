@@ -18,12 +18,7 @@ class Fetcher:
     self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
 
   @staticmethod
-  def fetch_json_from_url(url: str) -> dict:
-    html_content = Fetcher.fetch_html2(url)
-    return Fetcher.extract_json_data_dict(html_content)
-
-  @staticmethod
-  def fetch_html2(url_path: str) -> str:
+  def fetch_json_from_url(url_path: str) -> dict:
     """
     Fetches the HTML content from a URL or local file path.
 
@@ -37,11 +32,13 @@ class Fetcher:
       # response = json_handler.JsonHandler.fetch_json_from_url(url_path)
       response = requests.get(url_path)  # Fallback to requests for now
       response.raise_for_status()
-      return response.text
+      html_content = response.text
+      return Fetcher.extract_json_data_dict(html_content)
     else:
       # It's a local file path
       file_path = Path(url_path)
-      return file_path.read_text(encoding="utf-8")
+      html_content = file_path.read_text(encoding="utf-8")
+      return json.loads(html_content)
 
   @staticmethod
   def extract_json_data_dict(html_content: str) -> dict:
@@ -59,24 +56,3 @@ class Fetcher:
     except ValueError:
       logger.error("Failed to locate JSON data in the HTML content.")
       return {}
-
-  @staticmethod
-  def extract_json_data_str(html_content: str) -> str:
-      """
-      Extracts JSON data from the HTML content.
-
-      :param html_content: The HTML content as a string.
-      :return: The extracted JSON data as a string.
-      """
-      try:
-        start_index = html_content.find(NEXT_DATA_START)
-        if start_index == -1:
-          raise ValueError("Start marker for JSON data not found.")
-        start_index += len(NEXT_DATA_START)
-        end_index = html_content.find(NEXT_DATA_END, start_index)
-        if end_index == -1:
-          raise ValueError("End marker for JSON data not found.")
-        return html_content[start_index:end_index]
-      except ValueError as e:
-        logger.error(f"Failed to locate JSON data in the HTML content: {e}")
-        return ""
