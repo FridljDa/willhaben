@@ -14,10 +14,6 @@ from listing.structure.single_listing import SingleListing
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Constants for extracting JSON data
-NEXT_DATA_START = '<script id="__NEXT_DATA__" type="application/json">'
-NEXT_DATA_END = '</script>'
-
 # Constants for JSON keys
 KEY_PROPS = 'props'
 KEY_PAGE_PROPS = 'pageProps'

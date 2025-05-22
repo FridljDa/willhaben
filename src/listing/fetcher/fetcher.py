@@ -1,5 +1,6 @@
 import json
 import logging
+from pathlib import Path
 from typing import re
 from urllib.parse import urlparse
 
@@ -18,9 +19,7 @@ class Fetcher:
 
   @staticmethod
   def fetch_json_from_url(url: str) -> dict:
-    response = requests.get(url)
-    response.raise_for_status()
-    html_content = response.text
+    html_content = Fetcher.fetch_html2(url)
     return Fetcher.extract_json_data_dict(html_content)
 
   @staticmethod
