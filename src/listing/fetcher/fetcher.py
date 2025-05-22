@@ -15,8 +15,7 @@ NEXT_DATA_END = '</script>'
 
 class Fetcher:
   def __init__(self, url: str):
-    parsed_url = urlparse(url)
-    self.is_url = parsed_url.scheme in ("http", "https")
+    self.is_url = not isinstance(url, Path)
 
     if self.is_url:
       self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
@@ -31,18 +30,17 @@ class Fetcher:
     :return: The extracted JSON data as a dictionary.
     """
     if self.is_url:
-      # It's a URL
-      # Placeholder for json_handler.JsonHandler.fetch_content_as_json
-      # response = json_handler.JsonHandler.fetch_content_as_json(source)
-      response = requests.get(self.url)  # Fallback to requests for now
-      response.raise_for_status()
-      html_content = response.text
-      return Fetcher.extract_json_from_html(html_content)
+      html_content = self.fetch_html()
     else:
       # It's a local file path
       file_path = Path(self.url)
       html_content = file_path.read_text(encoding="utf-8")
-      return json.loads(html_content)
+    return Fetcher.extract_json_from_html(html_content)
+
+  def fetch_html(self) -> str:
+      response = requests.get(self.url)
+      response.raise_for_status()
+      return response.text
 
   @staticmethod
   def extract_json_from_html(html_content: str) -> dict:
