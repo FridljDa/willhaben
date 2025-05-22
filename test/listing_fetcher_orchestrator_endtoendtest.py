@@ -31,10 +31,11 @@ class TestListingFetcherOrchestratorEndToEnd(unittest.TestCase):
         self.assertGreater(len(orchestrator.multiple_listings.list_of_listings), 0)
 
 if __name__ == '__main__':
-    #Uncomment the following lines to fetch the HTML content and save it offline
-    #fetcher = Fetcher(url_query_test)
-    #html_content = fetcher.fetch_html()
-    #path_offline_html.parent.mkdir(parents=True, exist_ok=True)
-    #path_offline_html.write_text(html_content, encoding='utf-8')
+    if not path_offline_html.exists():
+        print(f"Offline HTML file not found at {path_offline_html}. Please fetch it first.")
+        fetcher = Fetcher(url_query_test)
+        html_content = fetcher.fetch_html()
+        path_offline_html.parent.mkdir(parents=True, exist_ok=True)
+        path_offline_html.write_text(html_content, encoding='utf-8')
 
     unittest.main()
