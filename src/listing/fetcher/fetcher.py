@@ -13,9 +13,9 @@ NEXT_DATA_START = '<script id="__NEXT_DATA__" type="application/json">'
 NEXT_DATA_END = '</script>'
 
 class Fetcher:
-  def __init__(self, source_url: str):
+  def __init__(self, url: str):
     # Replace &rows=<some number>& in the URL with &rows=1000&
-    self.url = re.sub(r"&rows=\d+&", "&rows=1000&", source_url)
+    self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
 
   @staticmethod
   def fetch_content_as_json(source: str) -> dict:
