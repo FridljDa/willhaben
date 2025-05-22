@@ -2,9 +2,8 @@
 name = "willhaben"
 version = "0.1.0"
 description = ""
-authors = [
-  "Daniel Fridljand <daniel.fridljand@gmail.com>"
-]
+authors = [{ name = "Daniel Fridljand", email = "daniel.fridljand@gmail.com" }]
+
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = ["requests","pip", "Flask", "openai", "colorama", 'pylint', "pandas"]
