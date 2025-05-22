@@ -56,11 +56,11 @@ class ListingsOverviewFetcher(Fetcher):
         self._process_single_listing(single_listing_before_conversion)
 
       logger.info(
-        f"Successfully fetched and processed {len(listings_summary)} listings.")
+          f"Successfully fetched and processed {len(listings_summary)} listings.")
 
     except requests.RequestException as req_err:
       logger.exception(
-        f"HTTP error occurred while fetching listings: {req_err}")
+          f"HTTP error occurred while fetching listings: {req_err}")
     except json.JSONDecodeError as json_err:
       logger.exception(f"JSON parsing error: {json_err}")
     except KeyError as key_err:
@@ -92,7 +92,8 @@ class ListingsOverviewFetcher(Fetcher):
     """
     single_listing = SingleListing()
     seo_url = \
-    single_listing_before_conversion['attributes']['attribute'][19]['values'][0]
+      single_listing_before_conversion['attributes']['attribute'][19]['values'][
+        0]
     if seo_url.startswith('immobilien/'):
       url = 'https://www.willhaben.at/iad/' + seo_url
       single_listing.add_key_value_pair('url', url)

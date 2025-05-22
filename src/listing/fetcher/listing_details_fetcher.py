@@ -26,11 +26,11 @@ class ListingDetailsFetcher(Fetcher):
     Extracts and sets the listing details from the soup.
     """
     parsed_data = Fetcher.fetch_content_as_json(
-      self.url)  # Use inherited method
+        self.url)  # Use inherited method
 
     listing_attribute = \
-    parsed_data['props']['pageProps']['advertDetails']['attributes'][
-      'attribute']
+      parsed_data['props']['pageProps']['advertDetails']['attributes'][
+        'attribute']
     for listing_attribute_key_value in listing_attribute:
       self.single_listing.listing_data[listing_attribute_key_value["name"]] = \
-      listing_attribute_key_value["values"]
+        listing_attribute_key_value["values"]

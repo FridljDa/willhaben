@@ -11,7 +11,7 @@ def fetch_and_process_listings(url_query):
 
   multiple_listings.apply_function_to_each_listing(
       lambda single_listing: ListingDetailsFetcher(
-        single_listing).fetch_and_set_single_listing_content()
+          single_listing).fetch_and_set_single_listing_content()
   )
 
   multiple_listings.subselect_listing_keys_and(relevant_keys)
