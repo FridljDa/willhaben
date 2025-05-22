@@ -7,7 +7,17 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["requests","pip", "Flask", "openai", "colorama", 'pylint', "pytest", "pandas"]
+dependencies = ["requests","pip", "Flask", "openai", "colorama", 'pylint', "pandas"]
+
+# This line tells tools like uv/pip where your source code is
+# if it's not directly in the project root.
+packages = [{include = "src"}]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest",
+    # Any other test-specific dependencies
+]
 
 [tool.ruff]
 # Set the maximum line length to 79.

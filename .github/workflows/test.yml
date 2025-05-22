@@ -26,7 +26,7 @@ jobs:
                 run: uv sync --locked --all-extras --dev
 
             -   name: Run all tests using pytest
-                run: uv run pytest test/test.py
+                run: uv run --with '.[test]' pytest
 
             -   name: Lint code with Ruff
                 run: ruff check --output-format=github --target-version=py312

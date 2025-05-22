@@ -689,12 +689,12 @@ dependencies = [
     { name = "pandas" },
     { name = "pip" },
     { name = "pylint" },
-    { name = "pytest" },
     { name = "requests" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "pytest" },
     { name = "ruff" },
 ]
 
@@ -706,9 +706,11 @@ requires-dist = [
     { name = "pandas" },
     { name = "pip" },
     { name = "pylint" },
-    { name = "pytest" },
     { name = "requests" },
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.11.8" }]
+dev = [
+    { name = "pytest" },
+    { name = "ruff", specifier = ">=0.11.8" },
+]

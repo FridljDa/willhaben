@@ -38,6 +38,7 @@ In your IDE, set the project's Python interpreter to `</absolute/path/to/project
 uv run main.py
 ```
 
+uv run --with '.[test]' pytest
 
 #### Extract results directly from URL
 For this method you need an URL of the willhaben search you want to make. 
