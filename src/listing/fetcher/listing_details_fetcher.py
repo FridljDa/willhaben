@@ -20,3 +20,4 @@ class ListingDetailsFetcher:
         listing_attribute = parsed_data['props']['pageProps']['advertDetails']['attributes']['attribute']
         for listing_attribute_key_value in listing_attribute:
           single_listing.listing_data[listing_attribute_key_value["name"]] = listing_attribute_key_value["values"]
+

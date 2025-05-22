@@ -47,15 +47,7 @@ class ListingsOverviewFetcher:
         logger.info(f"Fetching content from {self.url}")
 
         try:
-            # Fetch the HTML content of the URL
-            html_content = Fetcher.fetch_html2(self.url)
-
-            # Extract the JSON data from the <script> tag
-            json_data = Fetcher.extract_json_data_str(html_content)
-            if not json_data:
-                logger.error("Failed to extract JSON data from the HTML content.")
-
-            parsed_data = json.loads(json_data)
+            parsed_data = Fetcher.fetch_json_from_url(self.url)
 
             # Validate and extract listings
             listings_summary = self._extract_listings_summary(parsed_data)
@@ -104,3 +96,4 @@ class ListingsOverviewFetcher:
             url = 'https://www.willhaben.at/iad/' + seo_url
             single_listing.add_key_value_pair('url', url)
             self.multiple_listings.append_listing(single_listing)
+
