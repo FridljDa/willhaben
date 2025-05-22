@@ -21,7 +21,7 @@ KEY_SEARCH_RESULT = 'searchResult'
 KEY_LISTING_SUMMARY_LIST = 'advertSummaryList'
 KEY_LISTING_SUMMARY = 'advertSummary'
 
-class ListingsOverviewFetcher:
+class ListingsOverviewFetcher(Fetcher):
     """
     Fetches and processes listings from a given URL.
     """
@@ -34,7 +34,7 @@ class ListingsOverviewFetcher:
         :param multiple_listings: An instance of MultipleListings to store the processed listings.
         """
         # Replace &rows=<some number>& in the URL with &rows=1000&
-        self.url = re.sub(r"&rows=\d+&", "&rows=1000&", url)
+        super().__init__(url)
         self.multiple_listings = multiple_listings
 
 

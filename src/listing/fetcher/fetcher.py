@@ -1,7 +1,7 @@
 import json
 import logging
 from pathlib import Path
-from typing import re
+import re
 from urllib.parse import urlparse
 
 import requests
