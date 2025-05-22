@@ -47,7 +47,7 @@ class ListingsOverviewFetcher:
         logger.info(f"Fetching content from {self.url}")
 
         try:
-            parsed_data = Fetcher.fetch_json_from_url(self.url)
+            parsed_data = Fetcher.fetch_content_as_json(self.url)
 
             # Validate and extract listings
             listings_summary = self._extract_listings_summary(parsed_data)
@@ -84,7 +84,6 @@ class ListingsOverviewFetcher:
             return []
 
     def _process_single_listing(self, single_listing_before_conversion: dict) -> None:
-        # TODO replace by fetcher._process_single_listing
         """
         Processes a single listing and appends it to the multiple listings.
 

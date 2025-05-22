@@ -15,7 +15,7 @@ class ListingDetailsFetcher:
         Extracts and sets the listing details from the soup.
         """
         url = single_listing.listing_data['url']
-        parsed_data = Fetcher.fetch_json_from_url(url)
+        parsed_data = Fetcher.fetch_content_as_json(url)
 
         listing_attribute = parsed_data['props']['pageProps']['advertDetails']['attributes']['attribute']
         for listing_attribute_key_value in listing_attribute:
