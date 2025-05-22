@@ -78,7 +78,7 @@ class MultipleListings:
     df = pd.DataFrame(list_of_dictionary_listing)
     df.to_csv(self.path_csv, index=False, encoding='utf-8')
 
-  def subselect_listing_keys_and(self, keys: list) -> None:
+  def select_listing_keys_and(self, keys: list) -> None:
     """
     Filters the listing data to only include specified keys.
 

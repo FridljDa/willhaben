@@ -14,7 +14,7 @@ def fetch_and_process_listings(url_query):
           single_listing).fetch_and_set_single_listing_content()
   )
 
-  multiple_listings.subselect_listing_keys_and(relevant_keys)
+  multiple_listings.select_listing_keys_and(relevant_keys)
 
   multiple_listings.write_multiple_listings_to_txt_json_file()
   multiple_listings.write_multiple_listings_to_csv_file()
