@@ -20,10 +20,10 @@ class Fetcher:
     response = requests.get(url)
     response.raise_for_status()
     html_content = response.text
-    return Fetcher.extract_json_data(html_content)
+    return Fetcher.extract_json_data_dict(html_content)
 
   @staticmethod
-  def extract_json_data(html_content: str) -> dict:
+  def extract_json_data_dict(html_content: str) -> dict:
     """
     Extracts JSON data from the HTML content.
 
@@ -38,3 +38,24 @@ class Fetcher:
     except ValueError:
       logger.error("Failed to locate JSON data in the HTML content.")
       return {}
+
+  @staticmethod
+  def extract_json_data_str(html_content: str) -> str:
+      """
+      Extracts JSON data from the HTML content.
+
+      :param html_content: The HTML content as a string.
+      :return: The extracted JSON data as a string.
+      """
+      try:
+        start_index = html_content.find(NEXT_DATA_START)
+        if start_index == -1:
+          raise ValueError("Start marker for JSON data not found.")
+        start_index += len(NEXT_DATA_START)
+        end_index = html_content.find(NEXT_DATA_END, start_index)
+        if end_index == -1:
+          raise ValueError("End marker for JSON data not found.")
+        return html_content[start_index:end_index]
+      except ValueError as e:
+        logger.error(f"Failed to locate JSON data in the HTML content: {e}")
+        return ""

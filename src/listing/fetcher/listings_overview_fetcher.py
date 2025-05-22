@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 import requests
 
+from listing.fetcher.fetcher import Fetcher
 from listing.structure.multiple_listings import MultipleListings
 from listing.structure.single_listing import SingleListing
 
@@ -75,7 +76,7 @@ class ListingsOverviewFetcher:
             html_content = self.fetch_html(self.url)
 
             # Extract the JSON data from the <script> tag
-            json_data = self._extract_json_data(html_content)
+            json_data = Fetcher.extract_json_data_str(html_content)
             if not json_data:
                 logger.error("Failed to extract JSON data from the HTML content.")
 
@@ -100,26 +101,6 @@ class ListingsOverviewFetcher:
             logger.exception(f"Missing expected key in JSON data: {key_err}")
         except Exception as e:            logger.exception(f"An unexpected error occurred: {e}")
 
-    @staticmethod
-    def _extract_json_data(html_content: str) -> str:
-        """
-        Extracts JSON data from the HTML content.
-
-        :param html_content: The HTML content as a string.
-        :return: The extracted JSON data as a string.
-        """
-        try:
-            start_index = html_content.find(NEXT_DATA_START)
-            if start_index == -1:
-                raise ValueError("Start marker for JSON data not found.")
-            start_index += len(NEXT_DATA_START)
-            end_index = html_content.find(NEXT_DATA_END, start_index)
-            if end_index == -1:
-                raise ValueError("End marker for JSON data not found.")
-            return html_content[start_index:end_index]
-        except ValueError as e:
-            logger.error(f"Failed to locate JSON data in the HTML content: {e}")
-            return ""
 
     @staticmethod
     def _extract_listings_summary(parsed_data: dict) -> list[dict]:
