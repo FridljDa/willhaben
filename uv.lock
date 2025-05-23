@@ -459,11 +459,12 @@ wheels = [
 [[package]]
 name = "willhaben"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "flask" },
     { name = "pandas" },
     { name = "pip" },
+    { name = "pytest" },
     { name = "requests" },
 ]
 
@@ -479,6 +480,7 @@ requires-dist = [
     { name = "flask" },
     { name = "pandas" },
     { name = "pip" },
+    { name = "pytest", specifier = ">=8.3.5" },
     { name = "requests" },
 ]
 
@@ -486,5 +488,6 @@ requires-dist = [
 dev = [
     { name = "pylint" },
     { name = "pytest" },
+    { name = "pytest", specifier = ">=8.3.5" },
     { name = "ruff", specifier = ">=0.11.8" },
 ]
