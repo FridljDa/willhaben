@@ -8,7 +8,7 @@ from listing.structure.multiple_listings import MultipleListings
 from project_root import PROJECT_ROOT
 
 # Initialize the Flask application
-app = Flask(__name__)
+app: Flask = Flask(__name__)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO,
