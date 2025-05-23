@@ -5,6 +5,7 @@ import pandas as pd
 
 from listing.structure.single_listing import SingleListing
 from project_root import PROJECT_ROOT
+from relevant_columns import dtypes_columns
 
 
 class MultipleListings:
@@ -61,21 +62,37 @@ class MultipleListings:
     with open(self.path_json, 'w', encoding='utf-8') as f:
       json.dump(list_of_dictionary_listing, f, indent=4, ensure_ascii=False)
 
+
   def read_and_return_multiple_listings_from_csv_file(self) -> list[
     SingleListing]:
     """
     Reads the listing details from a CSV file and returns a list of SingleListing objects.
     """
-    df = pd.read_csv(self.path_csv, encoding='utf-8')
+    df = pd.read_csv(
+        self.path_csv,
+        encoding='utf-8',
+        dtype=dtypes_columns
+    )
+    # TODO parse dates
     return [SingleListing() for _, row in df.iterrows()]
+
+  def multiple_listings_to_pandas_dataframe(self) -> pd.DataFrame:
+    """
+    Converts the list of listings to a pandas DataFrame.
+    """
+    list_of_dictionary_listing = self.list_of_listings_to_dict()
+
+    df = pd.DataFrame(
+        list_of_dictionary_listing)
+
+          #TODO use .astype(dtypes_columns))
+    return df
 
   def write_multiple_listings_to_csv_file(self) -> None:
     """
     Writes the listing details to a CSV file.
     """
-
-    list_of_dictionary_listing = self.list_of_listings_to_dict()
-    df = pd.DataFrame(list_of_dictionary_listing)
+    df = self.multiple_listings_to_pandas_dataframe()
     df.to_csv(self.path_csv, index=False, encoding='utf-8')
 
   def select_listing_keys_and(self, keys: list) -> None:

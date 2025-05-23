@@ -3,6 +3,7 @@ from flask import Flask, render_template
 import os
 import logging
 
+from listing.structure.multiple_listings import MultipleListings
 from project_root import PROJECT_ROOT
 from relevant_columns import dtypes_columns
 
@@ -27,9 +28,9 @@ def parse_list(value):
 def display_table():
     try:
         # Read the CSV file into a pandas DataFrame
-        data = pd.read_csv(CSV_FILE_PATH)
-        #TODO use dtypes_columns
-        #TODO parse dates
+        multiple_listings = MultipleListings(CSV_FILE_PATH)
+        data = multiple_listings.multiple_listings_to_pandas_dataframe()
+
         # Convert DataFrame to a list of dictionaries for easier rendering in template
         headers = data.columns.tolist()
         rows = data.values.tolist()
