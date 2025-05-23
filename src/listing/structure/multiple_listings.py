@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 import pandas as pd
@@ -10,15 +9,10 @@ from relevant_columns import dtypes_columns
 
 class MultipleListings:
   def __init__(self, path: Path = None) -> None:
-    self.path_json = PROJECT_ROOT / 'out' / 'listings.txt'
     self.path_csv = PROJECT_ROOT / 'out' / 'listings.csv'
 
     if path is None:
       self.list_of_listings: list[SingleListing] = []
-    elif path.suffix == '.txt':
-      if not path.exists():
-        raise FileNotFoundError(f"File not found: {path}")
-      self.path_json = path
     elif path.suffix == '.csv':
       if not path.exists():
         raise FileNotFoundError(f"File not found: {path}")
@@ -40,24 +34,6 @@ class MultipleListings:
     """
     return [single_listing.listing_data for single_listing in
             self.list_of_listings]
-
-  def read_and_set_multiple_listings_from_txt_json_file(self) -> None:
-    """
-    Reads the listing details from a JSON file and returns a list of SingleListing objects.
-    """
-    with self.path_json.open('r', encoding='utf-8') as f:
-      list_of_listings_json = json.load(f)
-      self.list_of_listings = [SingleListing() for _ in list_of_listings_json]
-
-  def write_multiple_listings_to_txt_json_file(self) -> None:
-    """
-    Writes the listing details to a JSON file.
-    """
-    list_of_dictionary_listing = self.list_of_listings_to_dict()
-
-    self.path_json.parent.mkdir(parents=True, exist_ok=True)
-    with self.path_json.open('w', encoding='utf-8') as f:
-      json.dump(list_of_dictionary_listing, f, indent=4, ensure_ascii=False)
 
   def read_and_set_multiple_listings_from_csv_file(self) -> None:
     """
