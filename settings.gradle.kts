@@ -1,13 +1,2 @@
-rootProject.name = "willhaben"
-include("exercise1")
-include("solution1-via-entity-manager")
-include("solution1-via-repository")
-include("exercise2")
-include("exercise2-simplified")
-include("solution2")
-include("solution3")
-include("exercise3")
-include("exercise4")
-include("solution4")
-include("table-per-class-solution")
-include("single-table-solution")
+rootProject.name = "willhaben-grabber"
+include("willhaben-grabber-directory")
