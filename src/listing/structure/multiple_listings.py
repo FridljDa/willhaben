@@ -62,7 +62,6 @@ class MultipleListings:
     with open(self.path_json, 'w', encoding='utf-8') as f:
       json.dump(list_of_dictionary_listing, f, indent=4, ensure_ascii=False)
 
-
   def read_and_return_multiple_listings_from_csv_file(self) -> list[
     SingleListing]:
     """
@@ -85,7 +84,7 @@ class MultipleListings:
     df = pd.DataFrame(
         list_of_dictionary_listing)
 
-          #TODO use .astype(dtypes_columns))
+    # TODO use .astype(dtypes_columns))
     return df
 
   def write_multiple_listings_to_csv_file(self) -> None:

@@ -29,10 +29,10 @@ Keep in mind that you probably need multiple steps to get the required informati
 """
 
 listing_content = {
-        'heading': 'zentral und dennoch ruhig! 2 Zimmer Erstbezugswohnung mit Balkon ab sofort beziehbar!',
-        'body_dyn': 'Liebe Wohnungssuchende, Wir freuen uns über Ihr Interesse an dem Projekt APOLLOGASSE18 und bieten\xa0 auf unserer Projekt-Homepage w w w . a p o l l o g a s s e 1 8 . a t www.apollogasse18.at einen Überblick über alle verfügbaren Wohneinheiten.\xa0 Ob Zwei-,...',
-        'description': 'zentral und dennoch ruhig! 2 Zimmer Erstbezugswohnung mit Balkon ab sofort beziehbar!'
-    }
+  'heading': 'zentral und dennoch ruhig! 2 Zimmer Erstbezugswohnung mit Balkon ab sofort beziehbar!',
+  'body_dyn': 'Liebe Wohnungssuchende, Wir freuen uns über Ihr Interesse an dem Projekt APOLLOGASSE18 und bieten\xa0 auf unserer Projekt-Homepage w w w . a p o l l o g a s s e 1 8 . a t www.apollogasse18.at einen Überblick über alle verfügbaren Wohneinheiten.\xa0 Ob Zwei-,...',
+  'description': 'zentral und dennoch ruhig! 2 Zimmer Erstbezugswohnung mit Balkon ab sofort beziehbar!'
+}
 
 prompt_template = Template(prompt_template_string)
 print(f"DEBUG: prompt_template_string:\n{prompt_template_string}")

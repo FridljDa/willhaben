@@ -2,7 +2,6 @@ import json
 import logging
 import re
 from pathlib import Path
-from urllib.parse import urlparse
 
 import requests
 
@@ -38,9 +37,9 @@ class Fetcher:
     return Fetcher.extract_json_from_html(html_content)
 
   def fetch_html(self) -> str:
-      response = requests.get(self.url)
-      response.raise_for_status()
-      return response.text
+    response = requests.get(self.url)
+    response.raise_for_status()
+    return response.text
 
   @staticmethod
   def extract_json_from_html(html_content: str) -> dict:

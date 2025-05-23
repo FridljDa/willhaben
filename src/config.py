@@ -6,12 +6,14 @@ from pathlib import Path
 
 
 def parse_escaped(escaped_str: str):
-    if (escaped_str.startswith("'") and escaped_str.endswith("'")):
-        return escaped_str[1:-1]
-    return escaped_str
+  if (escaped_str.startswith("'") and escaped_str.endswith("'")):
+    return escaped_str[1:-1]
+  return escaped_str
+
 
 def parse_path(raw_path: str):
-    return raw_path.replace("\\\\", "\\")
+  return raw_path.replace("\\\\", "\\")
+
 
 config = configparser.ConfigParser()
 
@@ -33,10 +35,12 @@ prompt_parser_section_head = "Prompt Parser"
 # absolute path of the directory containing all prompts
 prompt_directory = config.get(prompt_parser_section_head, "prompt_directory")
 # list that contains answers of the llm that will be considered positive
-positive_list = json.loads(config.get(prompt_parser_section_head, "positive_list"))
+positive_list = json.loads(
+  config.get(prompt_parser_section_head, "positive_list"))
 # list that contains answers of the llm that will be considered negative
-negative_list = json.loads(config.get(prompt_parser_section_head, "negative_list"))
-
+negative_list = json.loads(
+  config.get(prompt_parser_section_head, "negative_list"))
 
 # filenames of special prompts
-decide_if_is_sublet_prompt_filename = config.get(prompt_parser_section_head, "decide_if_is_sublet_prompt_filename")
+decide_if_is_sublet_prompt_filename = config.get(prompt_parser_section_head,
+                                                 "decide_if_is_sublet_prompt_filename")

@@ -11,7 +11,8 @@ openai.default_headers = {"x-user-agent": config.llm_x_user_agent}
 def ask_llm(message: str) -> (bool, str):
   print("asking llm single question\n=======")
   print(f"user:{message}")
-  success, answer = get_llm_answer_for_messages([{"role": "user", "content": message}])
+  success, answer = get_llm_answer_for_messages(
+      [{"role": "user", "content": message}])
   print(f"assistant:{answer}")
   return success, answer
 
@@ -19,8 +20,8 @@ def ask_llm(message: str) -> (bool, str):
 def get_llm_answer_for_messages(messages: [dict]) -> (bool, str):
   try:
     response_raw = openai.chat.completions.create(
-      model=config.llm_model,
-      messages=messages,
+        model=config.llm_model,
+        messages=messages,
     )
   except UnprocessableEntityError as e:
     print(e)
@@ -45,10 +46,10 @@ class Dialog:
     success, answer = get_llm_answer_for_messages(self.messages)
 
     if success:
-        self.messages.append({
-          "role": "assistant",
-          "content": answer})
-        print(f"assistant:\n{answer}")
+      self.messages.append({
+        "role": "assistant",
+        "content": answer})
+      print(f"assistant:\n{answer}")
     else:
       print("Failed to answer")
 

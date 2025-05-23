@@ -32,4 +32,5 @@ class ListingDetailsFetcher(Fetcher):
         'attribute']
     for listing_attribute_key_value in listing_attribute:
       values = listing_attribute_key_value["values"][0]
-      self.single_listing.listing_data[listing_attribute_key_value["name"]] = values
+      self.single_listing.listing_data[
+        listing_attribute_key_value["name"]] = values
