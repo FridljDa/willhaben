@@ -4,7 +4,7 @@ import logging
 import requests
 
 from listing.fetcher.fetcher import Fetcher
-from listing.structure.multiple_listings import MultipleListings
+from listing.structure.multiple_listings import ListingRepository
 from listing.structure.single_listing import SingleListing
 
 # Configure logging
@@ -24,12 +24,12 @@ class ListingsOverviewFetcher(Fetcher):
   Fetches and processes listings from a given URL.
   """
 
-  def __init__(self, url: str, multiple_listings: MultipleListings):
+  def __init__(self, url: str, multiple_listings: ListingRepository):
     """
-    Initializes the fetcher with a URL and a MultipleListings instance.
+    Initializes the fetcher with a URL and a ListingRepository instance.
 
     :param url: The URL to fetch listings from.
-    :param multiple_listings: An instance of MultipleListings to store the processed listings.
+    :param multiple_listings: An instance of ListingRepository to store the processed listings.
     """
     # Replace &rows=<some number>& in the URL with &rows=1000&
     super().__init__(url)

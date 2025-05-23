@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from build.lib.listing.structure.multiple_listings import MultipleListings
+from build.lib.listing.structure.multiple_listings import ListingRepository
 from listing.fetcher.fetcher import Fetcher
 from listing.listing_fetcher_orchestrator import ListingFetcherOrchestrator
 from project_root import PROJECT_ROOT
@@ -42,7 +42,7 @@ class TestListingFetcherOrchestratorEndToEnd(unittest.TestCase):
         orchestrator = ListingFetcherOrchestrator(path_offline_html,
                                                   path=path_multiple_listings_csv,
                                                   silent=False)
-        multiple_listing_expected = MultipleListings(path=path_multiple_listings_reference_csv)
+        multiple_listing_expected = ListingRepository(path=path_multiple_listings_reference_csv)
         multiple_listing_expected.read_and_return_multiple_listings_from_csv_file()
 
         # Act

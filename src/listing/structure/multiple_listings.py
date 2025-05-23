@@ -7,7 +7,7 @@ from project_root import PROJECT_ROOT
 from relevant_columns import dtypes_columns
 
 
-class MultipleListings:
+class ListingRepository:
   def __init__(self, path: Path = None) -> None:
     self.path_csv = PROJECT_ROOT / 'out' / 'listings.csv'
 

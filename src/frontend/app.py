@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from flask import Flask, render_template
 
-from listing.structure.multiple_listings import MultipleListings
+from listing.structure.multiple_listings import ListingRepository
 from project_root import PROJECT_ROOT
 
 # Initialize the Flask application
@@ -31,7 +31,7 @@ def parse_list(value):
 def display_table():
   try:
     # Read the CSV file into a pandas DataFrame
-    multiple_listings = MultipleListings(CSV_FILE_PATH)
+    multiple_listings = ListingRepository(CSV_FILE_PATH)
     multiple_listings.read_and_set_multiple_listings_from_csv_file()
     data = multiple_listings.multiple_listings_to_pandas_dataframe()
 
