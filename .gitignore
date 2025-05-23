@@ -1,0 +1,36 @@
+/node_modules/
+/artifacts/
+/.nyc_output/
+/pythonsrc/config.ini
+/out/listings.csv
+/out/listings.txt
+.idea/
+
+target/
+build/
+.gradle/
+lombok.config
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.dbeaver
+bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
