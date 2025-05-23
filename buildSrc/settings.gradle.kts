@@ -1,1 +1,1 @@
-rootProject.name="orm-workshop-conventions"
+rootProject.name="willhaben"

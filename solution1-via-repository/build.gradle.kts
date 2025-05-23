@@ -1,3 +1,3 @@
 plugins {
-    id("orm-workshop.java-conventions")
+    id("willhaben.java-conventions")
 }

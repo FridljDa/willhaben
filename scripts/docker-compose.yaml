@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres
     restart: always
-    container_name: orm-workshop-postgresql
+    container_name: willhaben-postgresql
     ports:
       - "5432:5432"
     volumes:

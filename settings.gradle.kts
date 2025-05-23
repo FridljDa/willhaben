@@ -1,4 +1,4 @@
-rootProject.name = "orm-workshop"
+rootProject.name = "willhaben"
 include("exercise1")
 include("solution1-via-entity-manager")
 include("solution1-via-repository")
