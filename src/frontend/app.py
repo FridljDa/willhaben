@@ -32,6 +32,7 @@ def display_table():
   try:
     # Read the CSV file into a pandas DataFrame
     multiple_listings = MultipleListings(CSV_FILE_PATH)
+    multiple_listings.read_and_set_multiple_listings_from_csv_file()
     data = multiple_listings.multiple_listings_to_pandas_dataframe()
 
     # Convert DataFrame to a list of dictionaries for easier rendering in template

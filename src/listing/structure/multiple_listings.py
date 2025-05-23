@@ -19,12 +19,10 @@ class MultipleListings:
       if not path.exists():
         raise FileNotFoundError(f"File not found: {path}")
       self.path_json = path
-      self.list_of_listings = self.read_and_return_multiple_listings_from_txt_json_file()
     elif path.suffix == '.csv':
       if not path.exists():
         raise FileNotFoundError(f"File not found: {path}")
       self.path_csv = path
-      self.list_of_listings = self.read_and_return_multiple_listings_from_csv_file()
     else:
       raise ValueError(
           "Unsupported file type. Only .txt or .csv files are allowed.")
@@ -43,14 +41,13 @@ class MultipleListings:
     return [single_listing.listing_data for single_listing in
             self.list_of_listings]
 
-  def read_and_return_multiple_listings_from_txt_json_file(self) -> list[
-    SingleListing]:
+  def read_and_set_multiple_listings_from_txt_json_file(self) -> None:
     """
     Reads the listing details from a JSON file and returns a list of SingleListing objects.
     """
     with self.path_json.open('r', encoding='utf-8') as f:
       list_of_listings_json = json.load(f)
-      return [SingleListing() for _ in list_of_listings_json]
+      self.list_of_listings = [SingleListing() for _ in list_of_listings_json]
 
   def write_multiple_listings_to_txt_json_file(self) -> None:
     """
@@ -62,8 +59,7 @@ class MultipleListings:
     with self.path_json.open('w', encoding='utf-8') as f:
       json.dump(list_of_dictionary_listing, f, indent=4, ensure_ascii=False)
 
-  def read_and_return_multiple_listings_from_csv_file(self) -> list[
-    SingleListing]:
+  def read_and_set_multiple_listings_from_csv_file(self) -> None:
     """
     Reads the listing details from a CSV file and returns a list of SingleListing objects.
     """
@@ -73,7 +69,7 @@ class MultipleListings:
         dtype=dtypes_columns
     )
     # TODO parse dates
-    return [SingleListing() for _, row in df.iterrows()]
+    self.list_of_listings = [SingleListing() for _, row in df.iterrows()]
 
   def multiple_listings_to_pandas_dataframe(self) -> pd.DataFrame:
     """

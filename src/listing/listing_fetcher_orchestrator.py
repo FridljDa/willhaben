@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from listing.fetcher.listing_details_fetcher import ListingDetailsFetcher
 from listing.fetcher.listings_overview_fetcher import ListingsOverviewFetcher
 from listing.structure.multiple_listings import MultipleListings
@@ -5,9 +7,9 @@ from relevant_columns import relevant_keys
 
 
 class ListingFetcherOrchestrator:
-  def __init__(self, url_query, silent=True):
+  def __init__(self, url_query, path: Path = None, silent=True):
     self.url_query = url_query
-    self.multiple_listings = MultipleListings()
+    self.multiple_listings = MultipleListings(path=path)
     self.silent = silent
 
   def fetch_and_process_listings(self):
