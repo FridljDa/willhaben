@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+    postgres:
+        image: 'postgres:latest'
+        #restart: always
+        #container_name: willhaben-grabber-postgresql
+        #environment:
+        #    POSTGRES_PASSWORD: root_pw
+        environment:
+            - 'POSTGRES_DB=mydatabase'
+            - 'POSTGRES_PASSWORD=secret'
+            - 'POSTGRES_USER=myuser'
+        ports:
+            - '5432:5432'
+
+
+

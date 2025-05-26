@@ -1,15 +1,9 @@
-/node_modules/
-/artifacts/
-/.nyc_output/
-/pythonsrc/config.ini
-/out/listings.csv
-/out/listings.txt
-.idea/
-
-target/
+HELP.md
+.gradle
 build/
-.gradle/
-lombok.config
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 ### STS ###
 .apt_generated
@@ -18,19 +12,26 @@ lombok.config
 .project
 .settings
 .springBeans
-.dbeaver
+.sts4-cache
 bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
 ### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
