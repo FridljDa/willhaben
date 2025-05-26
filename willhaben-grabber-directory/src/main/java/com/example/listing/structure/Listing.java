@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity //TODO what does this do?
 @Table(name = "Listing")
+//TODO @toString(exclude = {}) //lombok
 public class Listing {
     private static final Logger logger = Logger.getLogger(Listing.class.getName());
     private final Map<String, String> listingData;
