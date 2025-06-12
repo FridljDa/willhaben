@@ -58,6 +58,9 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.testcontainers:r2dbc'
+    testImplementation 'io.cucumber:cucumber-java:7.18.0'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.18.0'
+    testImplementation 'io.cucumber:cucumber-spring:7.18.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -81,4 +84,26 @@ tasks.named('test') {
 tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+// Docker Compose tasks
+task dockerComposeUp(type: Exec) {
+    group = 'docker'
+    description = 'Start Docker Compose services using WSL'
+    commandLine 'wsl', 'docker', 'compose', 'up', '-d'
+    workingDir = project.rootDir
+}
+
+task dockerComposeDown(type: Exec) {
+    group = 'docker'
+    description = 'Stop Docker Compose services using WSL'
+    commandLine 'wsl', 'docker', 'compose', 'down'
+    workingDir = project.rootDir
+}
+
+task dockerComposeLogs(type: Exec) {
+    group = 'docker'
+    description = 'Show Docker Compose logs using WSL'
+    commandLine 'wsl', 'docker', 'compose', 'logs', '-f'
+    workingDir = project.rootDir
 }
